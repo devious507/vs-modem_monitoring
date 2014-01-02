@@ -1,0 +1,6 @@
+monitoring/rrd/*.rrd
+monitoring/nc/primaryChannel.log
+monitoring/nc/revRx
+monitoring/flapcheck/FLAP
+BACKUPS/dbbackup.db.gz
+
