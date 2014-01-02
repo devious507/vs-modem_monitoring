@@ -10,5 +10,5 @@ echo Unzipping DB Backup File
 gunzip dbbackup.db.gz
 
 echo Restoring to mysql
-mysql < /var/www/BACKUPS/dbbackup.db
+mysql dhcp_server < /var/www/BACKUPS/dbbackup.db
 
