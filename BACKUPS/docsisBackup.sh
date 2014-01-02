@@ -2,7 +2,6 @@
 
 mysqldump dhcp_server --lock-all-tables > dbbackup.db
 gzip --best dbbackup.db
-scp dbbackup.db.gz root@38.108.136.8:/var/www/BACKUPS
 
 mkdir etc
 mkdir root
