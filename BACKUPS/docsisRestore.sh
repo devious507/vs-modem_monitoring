@@ -12,3 +12,5 @@ gunzip dbbackup.db.gz
 echo Restoring to mysql
 mysql dhcp_server < /var/www/BACKUPS/dbbackup.db
 
+rm dbbackup.db
+
