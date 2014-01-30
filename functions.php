@@ -1,6 +1,9 @@
 <?php
 
 require_once("MDB2.php");
+define("SP_TARGET",13);
+define("OTHER_TARGET",10);
+
 $config['dtypes']=array("IP","2IP","INT8","UINT8","INT16","UINT16","INT32","UINT32","CHAR","SUB-OPT");
 $config['nettypes']=array("CM","CPE","MTA");
 
@@ -44,9 +47,9 @@ function revTxColor($val) {
 }
 function revRxColor($val,$property) {
 	if($property == 'Sun Prairie') {
-		$target=22;
+		$target=SP_TARGET;
 	} else	{
-		$target=10;
+		$target=OTHER_TARGET;
 	}
 	if(abs($target-$val) <= 1) {
 		return "lightgreen";
@@ -59,6 +62,18 @@ function revRxColor($val,$property) {
 	}
 }
 function revSnrColor($val) {
+	// New Color Schema for QPSK
+	if($val >=30) {
+		return "lightgreen";
+	} elseif($val >=25) {
+		return "yellow";
+	} elseif($val >=20) {
+		return "pink";
+	} else {
+		return "red";
+	}
+	/*
+	// Color Schema for QAM
 	if($val >= 33) {
 		return "lightgreen";
 	} elseif($val >= 31) {
@@ -68,6 +83,7 @@ function revSnrColor($val) {
 	} else {
 		return "#cc3333";
 	}
+	 */
 }
 function getHeaderRow($row) {
 	$rv="<tr>";
