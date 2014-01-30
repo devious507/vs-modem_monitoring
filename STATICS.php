@@ -91,6 +91,8 @@ foreach($statics as $k=>$v) {
 	$db->query($sql);
 }
 
+$sql="insert into dhcp_oldleases select *,now() from dhcp_leases WHERE end_time < now()";
+$db->query($sql);
 
 $sql="DELETE FROM dhcp_leases WHERE end_time < now() AND dynamic_flag='YES'";
 $db->query($sql);
