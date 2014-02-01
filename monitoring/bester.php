@@ -87,10 +87,24 @@ if(preg_match("/hideaddress=true/",$_SERVER['REQUEST_URI'])) {
 $offlineURL="<a href=\"/monitoring/bester.php?offline=true\">Offline Modems</a>";
 $noAddress="<a href=\"/monitoring/bester.php?search=nonode&value=0&hideaddress=true\">No Address Info</a>";
 $online24OfflineNow="<a href=\"/monitoring/bester.php?offline=true&hours=24\">Reported in Last 24 Hrs. Offline Now</a>";
-if(!isset($_GET['hideaddress']) OR ($_GET['hideaddress']!='true')) {
-	$body.="<tr><td colspan=\"{$topColSpan}\"><a href=\"/index.php\">Main Page</a> | <a href=\"{$url}\">Hide Names and Addresses</a> | <a href=\"/monitoring/bester.php\">Show All Modems</a> | {$offlineURL} | {$noAddress} | {$online24OfflineNow} </td></tr>\n";
+if(isset($_GET['search']) && isset($_GET['value'])) {
+	switch($_GET['search']) {
+	case "property":
+	case "building":
+	case "node":
+		$overview="<a href=\"/monitoring/overview.php?search={$_GET['search']}&value={$_GET['value']}\">Modem Averages and Overview</a>";
+		break;
+	default:
+		$overview="<a href=\"/monitoring/overview.php\">Modem Averages and Overview</a>";
+		break;
+	}
 } else {
-	$body.="<tr><td colspan=\"{$topColSpan}\"><a href=\"/index.php\">Main Page</a> | <a href=\"{$url}\">Show Names and Addresses</a> | <a href=\"/monitoring/bester.php\">Show All Modems</a> | {$offlineURL} | {$noAddress} | {$online24OfflineNow} </td></tr>\n";
+	$overview="<a href=\"/monitoring/overview.php\">Modem Averages and Overview</a>";
+}
+if(!isset($_GET['hideaddress']) OR ($_GET['hideaddress']!='true')) {
+	$body.="<tr><td colspan=\"{$topColSpan}\"><a href=\"/index.php\">Main Page</a> | <a href=\"{$url}\">Hide Names and Addresses</a> | <a href=\"/monitoring/bester.php\">Show All Modems</a> | {$offlineURL} | {$noAddress} | {$online24OfflineNow} | {$overview} </td></tr>\n";
+} else {
+	$body.="<tr><td colspan=\"{$topColSpan}\"><a href=\"/index.php\">Main Page</a> | <a href=\"{$url}\">Show Names and Addresses</a> | <a href=\"/monitoring/bester.php\">Show All Modems</a> | {$offlineURL} | {$noAddress} | {$online24OfflineNow} | {$overview}</td></tr>\n";
 
 }
 $body.="\t<tr><td colspan=\"{$topColSpan}\"><hr></td></tr>\n";

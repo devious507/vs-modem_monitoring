@@ -2,8 +2,8 @@
 
 require_once("config.php");
 
-if(isset($_GET['limit']) && isset($_GET['value'])) {
-	$where="WHERE {$_GET['limit']}='{$_GET['value']}'";
+if(isset($_GET['search']) && isset($_GET['value'])) {
+	$where="WHERE {$_GET['search']}='{$_GET['value']}'";
 } else {
 	$where='';
 }
@@ -26,6 +26,11 @@ $db->query($temp_table);
 $db->query($remove_refs);
 $results=$db->query($select_sql);
 
+if(isset($_GET['search']) && isset($_GET['value'])) {
+	$besterLink="<a href=\"/monitoring/bester.php?search={$_GET['search']}&value={$_GET['value']}\">Modem Details</a>";
+} else {
+	$besterLink="&nbsp;";
+}
 $body="<table cellpadding=\"3\" cellspacing=\"0\" border=\"1\">\n";
 $body.="\t<tr>\n";
 $body.="\t\t<td align=\"center\" colspan=\"3\">&nbsp;</td>\n";
@@ -37,7 +42,7 @@ $body.="\t\t<td align=\"center\" colspan=\"3\">RevSNR</td>\n";
 $body.="\t</tr>\n";
 
 $body.="\t<tr>\n";
-$body.="\t\t<td align=\"center\" colspan=\"3\">&nbsp;</td>\n";
+$body.="\t\t<td align=\"center\" colspan=\"3\">{$besterLink}</td>\n";
 for($i=0; $i<5; $i++) {
 	$body.="\t\t<td align=\"right\">Min</td>\n";
 	$body.="\t\t<td align=\"right\">Avg</td>\n";
@@ -46,10 +51,14 @@ for($i=0; $i<5; $i++) {
 $body.="\t</tr>\n";
 
 while(($row=$results->fetchRow())==true) {
+	$baseURL="/monitoring/overview.php?search=";
+	$propLink="<a href=\"{$baseURL}property&value={$row['property']}\">{$row['property']}</a>";
+	$bldgLink="<a href=\"{$baseURL}building&value={$row['building']}\">{$row['building']}</a>";
+	$nodeLink="<a href=\"{$baseURL}node&value={$row['node']}\">{$row['node']}</a>";
 	$body.="\t<tr>\n";
-	$body.="\t\t<td>{$row['property']}</td>\n";
-	$body.="\t\t<td>{$row['building']}</td>\n";
-	$body.="\t\t<td>{$row['node']}</td>\n";
+	$body.="\t\t<td>{$propLink}</td>\n";
+	$body.="\t\t<td>{$bldgLink}</td>\n";
+	$body.="\t\t<td>{$nodeLink}</td>\n";
 	$body.=buildCell($row['min_fwdrx'],'fwdrx');
 	$body.=buildCell($row['avg_fwdrx'],'fwdrx');
 	$body.=buildCell($row['max_fwdrx'],'fwdrx');
