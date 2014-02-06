@@ -4,4 +4,5 @@ monitoring/nc/revRx
 monitoring/flapcheck/FLAP
 BACKUPS/dbbackup.db.gz
 BACKUPS/dbbackup.db
+BACKUPS/dns_secure/iptables.sh
 
