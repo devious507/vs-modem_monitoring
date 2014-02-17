@@ -70,11 +70,22 @@ $customerInfo.=$row['apartment']."<br>";
 $customerInfo.=$row['city'].", ".$row['state']." ".$row['zip']."<hr>";
 $customerInfo.="<a href=\"/monitoring/modemHistory.php?mac={$mac}\" target=\"_TOP\">Modem History</a><br>";
 $customerInfo.="<a href=\"index.php\">Modem Usage List</a><br>";
+
+$sql="SELECT sum(down_delta) as d, sum(up_delta) as u FROM cable_usage WHERE modem_macaddr='{$mac}'";
+$res=$db->query($sql);
+$row=$res->fetchRow();
+$d=floatval($row['d'])/1024/1024/1024;
+$u=floatval($row['u'])/1024/1024/1024;
+$customerInfo.="<hr><hr><table cellpadding=\"5\" cellspacing=\"0\" border=\"1\" width=\"100%\">";
+$customerInfo.=sprintf("<tr><td>Download Total</td><td align=\"right\">%.1f GB</td></tr>",$d);
+$customerInfo.=sprintf("<tr><td>Upload Total</td><td align=\"right\">%.1f GB</td></tr>",$u);
+$customerInfo.="</table><hr><hr>";
+
 ?>
 <html><head><title>Modem detail</title></head>
 <body>
 <table cellpadding="5" cellspacing="0" border="0">
-<tr><td>
+<tr rowspan="2"><td>
 <table cellpadding="5" cellspacing="0" border="1">
 <tr><td>Entry Time</td><td>Acct #</td><td>Down Counter</td><td>Up Counter</td><td>Down Delta</td><td>Up Delta</td></tr>
 <?php echo $tbl; ?>
