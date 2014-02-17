@@ -6,6 +6,7 @@ if(!isset($_GET['direction'])) {
 	print "<html><head><title>Direction Choice</title></head><body>";
 	print "<a href=\"reportUsage.php?direction=up\">Up</a><br>";
 	print "<a href=\"reportUsage.php?direction=down\">Down</a><br>";
+	print "<a href=\"reportUsage.php?direction=combined\">Combined</a><br>";
 	print "</body></html>";
 	exit();
 }

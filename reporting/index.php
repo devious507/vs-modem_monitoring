@@ -1,4 +1,6 @@
 <?php
+header("Location: reportUsage.php");
+exit();
 
 ?>
 <html>
