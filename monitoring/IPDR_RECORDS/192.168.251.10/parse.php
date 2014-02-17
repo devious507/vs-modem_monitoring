@@ -1,44 +1,62 @@
 <?php
 
-$files[]='1351534028.txt';
-$files[]='1351534392.txt';
-$files[]='1351538991.txt';
-$files[]='1351539526.txt';
-
-parseFile($files[3]);
-/*
-foreach($files as $f) {
-	parseFile($f);
+require_once("../../../config.php");
+if(isset($argv[1])) {
+	$modemSubArray=getMacSubArray();
+	parseFile($argv[1],$modemSubArray);
 }
- */
-function parseFile($file) {
+
+
+function getMacSubArray() {
+	$return=array();
+	$sql="select modem_macaddr,subnum FROM docsis_modem";
+	$db = connect();
+	$rset = $db->query($sql);
+	while(($row=$rset->fetchRow())==true) {
+		$return[$row['modem_macaddr']]=$row['subnum'];
+	}
+	return $return;
+}
+function parseFile($file,$modemSubs) {
+	$db=connect();
 	$filename = '/var/www/monitoring/IPDR_RECORDS/192.168.251.10/' . $file;
-	$xmlstr=file_get_contents($filename,filesize($filename));
-	$data = new SimpleXMLElement($xmlstr);
-	unset($xmlstr);
+	$move_file = '/var/www/monitoring/IPDR_RECORDS/192.168.251.10/parsed/'.$file;
+	$data = new SimpleXMLElement(file_get_contents($filename));
 	$modems=array();
 	foreach($data as $dat) {
 		//print "<pre>"; var_dump($dat); exit();
-		$time = $dat->IPDRcreationTime;
+		$time = IPDRTime2Localtime(sprintf("%s",$dat->IPDRcreationTime));
 		$mac = fixMac($dat->CMmacAddress);
 		$direction = $dat->serviceDirection;
 		$octets = $dat->serviceOctetsPassed;
-		if($direction == 1) {
-			$modems[$mac]['time'][0]=$time;
-			$modems[$mac]['up']=$octets;
+		if($mac == "") {
+			//
 		} else {
-			$modems[$mac]['time'][1]=$time;
-			$modems[$mac]['down']=$octets;
+			$subnum = $modemSubs[$mac];
+			$modems[$mac]['subnum']=$subnum;
+			if($direction == 1) {
+				$modems[$mac]['timeup']=$time;
+				$modems[$mac]['down']=$octets;
+				$modems[$mac]['mac']=$mac;
+			} else {
+				$modems[$mac]['timedown']=$time;
+				$modems[$mac]['up']=$octets;
+			}
 		}
-		//printf("%s<br>\n",$time);
+			//printf("%s<br>\n",$time);
 	}
+	unset($data);
 	foreach($modems as $mod) {
+		if(!isset($mod['up']) && !isset($mod['down'])) {
+			print "\t\t\t\tSkipping {$mod['mac']}\n";
+		} else {
+			$sql="INSERT INTO cable_usage VALUES ('%s','%s','%s','%s','%s',NULL,NULL)";
+			$sql=sprintf($sql,$mod['mac'],$mod['timeup'],$mod['subnum'],$mod['down'],$mod['up']);
+			print $sql."\n";
+			$db->query($sql);
+		}
 	}
-	//print "<pre>";
-	//  94CCB945795B
-	//printf("%s -- %s<br>",$modems['94CCB945795B']['time'][0],$modems['94CCB945795B']['up']);
-	var_dump($modems['0017EE4678FA']);
-	//print "</pre>";
+	rename($filename,$move_file);
 }
 
 
@@ -46,5 +64,12 @@ function fixMac($mac) {
 	$mac = preg_replace("/-/",'',$mac);
 	$mac = preg_replace("/:/",'',$mac);
 	return $mac;
+}
+
+function IPDRTime2Localtime($tstamp = '2012-10-29T19:26:11Z') {
+	$pat = '%d-%d-%dT%d:%d:%dZ';
+	$arr = sscanf($tstamp,$pat);
+	$time = mktime($arr[3],$arr[4],$arr[5],$arr[1],$arr[2],$arr[0]);
+	return date('Y-m-d H:i:s',$time);
 }
 

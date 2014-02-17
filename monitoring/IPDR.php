@@ -31,6 +31,7 @@ if( socket_bind($sock, $address, $port) === false )
 socket_listen( $sock );
 while( true ) 
 {
+    $count=0;
     // Make an array of sockets to check if they have data
     $read = array( $sock );
     foreach( $clients as $client_index => $client )
@@ -60,7 +61,7 @@ while( true )
     // Cycle each client
     foreach( $clients as $client_index => $client) // for each client
     {
-        // If socket in sockets with data
+        // If socket in sockets with data`
         if( in_array( $client[ 'sock' ], $read) === true )
         {
             $buffer = socket_read( $client[ 'sock' ], 2048);
@@ -80,7 +81,8 @@ while( true )
             }
  
             $location .= $client[ 'filename' ];
-            echo "* Writing on " . $location . "\n";
+            echo "{$count} * Writing on " . $location . "\n";
+	    $count++;
             file_put_contents( $location, $buffer, FILE_APPEND );
         }
     }

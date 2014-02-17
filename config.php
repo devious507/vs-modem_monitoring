@@ -94,9 +94,11 @@ if( ($_COOKIE['username'] == SUPER_USER) && ($_COOKIE['password'] == SUPER_PASS)
 	$menu2 .="<li><a href=\"logout.php\">Logout</a></li>\n";
         $menu2 .="</ul>";
 } else {
-	if(!preg_match('/API.php/',$_SERVER['REQUEST_URI'])) {
-		doLoginPage();
-		exit();
+	if(php_sapi_name() != 'cli') { 
+		if(!preg_match('/API.php/',$_SERVER['REQUEST_URI'])) {
+			doLoginPage();
+			exit();
+		}
 	}
 }
 require_once("MDB2.php");
