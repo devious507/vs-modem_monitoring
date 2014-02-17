@@ -143,7 +143,8 @@ if(strlen($mac) == 12) {
 	$upModem = "<a href=\"monitoring/upModem.php?mac={$mac}\">Up Modem Tool</a>";
 	$dMac = getDottedMac($mac);
 	$flapList = "<a href=\"/monitoring/flapcheck/index.php?mac={$dMac}\">Flaps</a>";
-	$body.="<tr><td colspan=\"{$colSpan}\"><input type=\"hidden\" name=\"mac\" value=\"{$mac}\">[ {$bester} | {$configure} | {$newBester} | {$upModem} | {$flapList} ]</td></tr>\n";
+	$usageLink = "<a href=\"/reporting/modemDump.php?mac={$mac}\">Up and Download History</a>";
+	$body.="<tr><td colspan=\"{$colSpan}\"><input type=\"hidden\" name=\"mac\" value=\"{$mac}\">[ {$bester} | {$configure} | {$newBester} | {$upModem} | {$flapList} | {$usageLink} ]</td></tr>\n";
 	$month=$day=$year=NULL;
 	if(isset($_GET['startmonth']))
 		$month=$_GET['startmonth'];

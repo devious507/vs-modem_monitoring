@@ -54,7 +54,7 @@ while(($row=$results->fetchRow())==true) {
 			$tbl.="\t<td align=\"right\">{$vv}</td>\n";
 			break;
 		case "modem_macaddr":
-			$link="<a href=\"modemDetail.php?mac={$v}\">{$v}</a>";
+			$link="<a href=\"modemDump.php?mac={$v}\">{$v}</a>";
 			$tbl.="\t<td>{$link}</td>\n";
 			break;
 		default:

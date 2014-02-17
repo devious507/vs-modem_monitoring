@@ -9,6 +9,7 @@ if(!isset($_GET['mac'])) {
 
 $mac=$_GET['mac'];
 $macLink="<a href=\"modemDump.php?mac={$mac}\">{$mac}</a>";
+$listLink="<a href=\"index.php\">Modem Usage List</a>";
 $mac=preg_replace('/[^a-zA-Z0-9]/','',$mac);
 if(strlen($_GET['mac']) != 12) {
 	header("LOcation: index.php");
@@ -44,7 +45,7 @@ while(($row=$res->fetchRow())==true) {
 <html><head><title>Modem detail</title></head>
 <body>
 <table cellpadding="5" cellspacing="0" border="1">
-<tr><td colspan="9" align="center"><?php echo $macLink; ?></td></tr>
+<tr><td colspan="9" align="center"><?php echo $macLink; ?> | <?php echo $listLink; ?></td></tr>
 <tr><td rowspan="2">Period End Time</td><td colspan="4" align="center">Downloaded</td><td colspan="4" align="center">Upload</td></tr>
 <tr><td align="right">B</td><td align="right">kB</td><td align="right">mB</td><td align="right">gB</td><td align="right">B</td><td align="right">kB</td><td align="right">mB</td><td align="right">gB</td></tr>
 <?php echo $tbl; ?>
