@@ -1,6 +1,7 @@
 #!/bin/sh
 
 mysqldump dhcp_server --lock-all-tables > dbbackup.db
+rm dbbackup.db.gz
 gzip --best dbbackup.db
 
 mkdir etc
