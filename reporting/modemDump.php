@@ -77,8 +77,25 @@ $row=$res->fetchRow();
 $d=floatval($row['d'])/1024/1024/1024;
 $u=floatval($row['u'])/1024/1024/1024;
 $customerInfo.="<hr><hr><table cellpadding=\"5\" cellspacing=\"0\" border=\"1\" width=\"100%\">";
+$customerInfo.=sprintf("<tr><td colspan=\"2\"><b>MTD Totals</b></td></tr>");
 $customerInfo.=sprintf("<tr><td>Download Total</td><td align=\"right\">%.1f GB</td></tr>",$d);
 $customerInfo.=sprintf("<tr><td>Upload Total</td><td align=\"right\">%.1f GB</td></tr>",$u);
+$customerInfo.="</table><hr><hr>";
+$sql="SELECT month,year,modem_macaddr,down_delta/1024/1024/1024 as down,up_delta/1024/1024/1024 as up FROM monthly_usage WHERE sub_id='{$wincable}' ORDER BY year DESC,month DESC LIMIT 12";
+$res=$db->query($sql);
+
+$customerInfo.="<table cellpadding=\"5\" cellspacing=\"0\" border=\"1\" width=\"100%\">";
+$customerInfo.="<tr><td>Period</td><td>MAC</td><td align=\"right\">Down</td><td align=\"right\">Up</td></tr>";
+while(($row=$res->fetchRow())==true) {
+	//print "<pre>"; var_dump($row); print "</pre>"; exit();
+	$url="<a href=\"/monitoring/modemHistory.php?mac={$row['modem_macaddr']}\">{$row['modem_macaddr']}</a>";
+	$customerInfo.=sprintf("<tr><td>%02d/%d</td><td>%s</td><td align=\"right\">%.1f GB</td><td align=\"right\">%.1f GB</td></tr>",
+		$row['month'],
+		$row['year'],
+		$url,
+		$row['down'],
+		$row['up']);
+}
 $customerInfo.="</table><hr><hr>";
 
 ?>

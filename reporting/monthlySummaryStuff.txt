@@ -1,0 +1,5 @@
+INSERT INTO monthly_usage (select '2' as month,'2014' as year,modem_macaddr,sub_id,sum(down_delta),sum(up_delta) from cable_usage WHERE delete GROUP BY modem_macaddr,sub_id);
+
+DELETE FROM cable_usage WHERE DATE_FORMAT(entry_time, '%Y-%m-01')='2014-02-01';
+
+

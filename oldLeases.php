@@ -27,7 +27,7 @@ if(PEAR::isError($rset)) {
 $num = $rset->numRows();
 $page="<!--\n{$sql}\n-->\n";
 $page.="<table width=\"100%\" cellpadding=\"5\" cellspacing=\"0\" border=\"1\">\n";
-$page.="<tr><td colspan=\"7\"><form method=\"get\" action=\"oldLeases.php\">IP Address: <input type=\"text\" name=\"ipaddr\"> <input type=\"submit\" value=\"Search\"></td></tr>\n";
+$page.="<tr><td colspan=\"6\"><form method=\"get\" action=\"oldLeases.php\">IP Address: <input type=\"text\" name=\"ipaddr\"> <input type=\"submit\" value=\"Search\"></td><td><a href=\"tzConvert.php\">TZ Convertor</td></tr>\n";
 if($num > 0) {
 	$row = $rset->fetchRow();
 	foreach($row as $k=>$v) {
