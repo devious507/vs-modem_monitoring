@@ -15,7 +15,7 @@ if(strlen($_GET['mac']) != 12) {
 	exit();
 }
 
-$sql="SELECT * FROM cable_usage WHERE modem_macaddr='{$mac}'";
+$sql="SELECT * FROM cable_usage WHERE modem_macaddr='{$mac}' ORDER BY entry_time ASC";
 //print $sql; exit();
 $db=connect();
 $res=$db->query($sql);
