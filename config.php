@@ -68,7 +68,7 @@ if( ($_COOKIE['username'] == SUPER_USER) && ($_COOKIE['password'] == SUPER_PASS)
 	$menu2.="<li><a href=\"monitoring/bester.php\">Modem List</a></li>\n";
 	$menu2.="<li><a href=\"monitoring/troubleshooter/index.php\">Troubleshooter</a></li>\n";
         $menu2.="<li><a href=\"currentDhcpLeases.php\">Current Leases</a></li>\n";
-        $menu2.="<li><a href=\"oldLeases.php\">Old Leases</a></li>\n";
+        $menu2.="<li><a href=\"/dmca/index.php\">Old Leases</a></li>\n";
 	$menu2.="<li><a href=\"monitoring/map.php\">Modem Maps</a>\n";
 	$menu2.="<li><a href=\"logout.php\">Logout</a></li>\n";
         $menu2.="</ul>\n";
