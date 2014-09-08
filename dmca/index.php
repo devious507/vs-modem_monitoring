@@ -1,5 +1,7 @@
 <?php
 
+header("Location: tagEvent.php");
+exit();
 require_once("../config.php");
 
 if(!isset($_GET['ipaddr']) && !isset($_GET['subnum'])) {
@@ -40,10 +42,11 @@ if($num > 0) {
 			$ks[]=$k;
 			//$vs[]="<a href=\"edit_modem.php?modem_macaddr={$v}\">{$v}</a>";
 			$vs[]="<a href=\"monitoring/modemHistory.php?mac={$v}\">{$v}</a>";
+			$vs[]="<a href=\"/dmca/tagEntry.php?mac={$v}\"></a>";
 			break;
 		case "subnum":
 			$ks[]=$k;
-			$vs[]="<a href=\"/dmca/index.php?subnum={$v}\">{$v}</a>";
+			$vs[]="<a href=\"/dmca/index.php?subnum={$v}\">{$v}</a><br><a href=\"/dmca/tagEvent.php?subnum={$v}\">Tag</a>";
 			break;
 		default:
 			$ks[]=$k;
@@ -67,7 +70,8 @@ if($num >1) {
 				$vs[]="<a href=\"monitoring/modemHistory.php?mac={$v}\">{$v}</a>";
 				break;
 			case "subnum":
-				$vs[]="<a href=\"/dmca/index.php?subnum={$v}\">{$v}</a>";
+			//	$vs[]="<a href=\"/dmca/index.php?subnum={$v}\">{$v}</a>";
+				$vs[]="<a href=\"/dmca/index.php?subnum={$v}\">{$v}</a><br><a href=\"/dmca/tagEvent.php?subnum={$v}\">Tag</a>";
 				break;
 			default:
 				$vs[]=$v;

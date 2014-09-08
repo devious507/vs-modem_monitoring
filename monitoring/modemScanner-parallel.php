@@ -152,9 +152,9 @@ function scanHost($h,$start) {
 	foreach($data as $k=>$v) {
 		$index = getIndex($k);
 		$modems[$index]['revsnr'] = revSnr($v);
-		if($modems[$index]['revsnr'] > 100) {
+		//if($modems[$index]['revsnr'] > 100) {
 			$modems[$index]['revsnr']/=10;
-		}
+		//}
 	}
 	$last=elapsed($last,"revSNR");
 	$data = snmprealwalk($h,community,cmStatus);
