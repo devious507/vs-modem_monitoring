@@ -144,7 +144,8 @@ if(strlen($mac) == 12) {
 	$dMac = getDottedMac($mac);
 	$flapList = "<a href=\"/monitoring/flapcheck/index.php?mac={$dMac}\">Flaps</a>";
 	$usageLink = "<a href=\"/reporting/modemDump.php?mac={$mac}\">Up and Download History</a>";
-	$body.="<tr><td colspan=\"{$colSpan}\"><input type=\"hidden\" name=\"mac\" value=\"{$mac}\">[ {$bester} | {$configure} | {$newBester} | {$upModem} | {$flapList} | {$usageLink} ]</td></tr>\n";
+	$dispatchLink= "<a href=\"http://dashboard.visionsystems.tv/dispatcher/assistant.php?mac={$mac}\">Dispatch&nbsp;Assistant</a>";
+	$body.="<tr><td colspan=\"{$colSpan}\"><input type=\"hidden\" name=\"mac\" value=\"{$mac}\">[ {$bester} | {$configure} | {$newBester} | {$upModem} | {$flapList} | {$usageLink} | {$dispatchLink} ]</td></tr>\n";
 	$month=$day=$year=NULL;
 	if(isset($_GET['startmonth']))
 		$month=$_GET['startmonth'];
