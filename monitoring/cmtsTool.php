@@ -65,6 +65,13 @@ if(isset($_GET['mac'])) {
 			$cable_iface=preg_replace("/ /","",$cable_iface);
 		}
 	}
+	$task='show cable modem | include $mac\nshow int $cable modem $modem';
+	$task=preg_replace("/\\\$mac/",$mac,$task);
+	$task=preg_replace("/\\\$cable/",$cable_iface,$task);
+	$task=preg_replace("/\\\$modem/",$modem_id,$task);
+	$task=preg_replace("/\\\$ip/",$ip_addr,$task);
+	$task=preg_replace("/\\\\n/","\n",$task);
+	$doTask=$task;
 } else {
 	$mac=$_POST['mac'];
 	$cmts=$_POST['cmts'];
