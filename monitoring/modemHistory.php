@@ -138,14 +138,15 @@ if(strlen($mac) == 12) {
 		}
 		$body.="</tr>\n";
 	$bester = "<a href=\"http://bester.visionsystems.tv:8080/modem/upmodem.php?mac={$mac}\">Bester</a>";
+	$bester2 = "<a href=\"/monitoring/cmtsTool.php?mac={$mac}\">Bester2</a>";
 	$configure = "<a href=\"http://38.108.136.6/modem.php?search=modem_macaddr&value={$mac}\">Config</a>";
-	$newBester = "<a href=\"/monitoring/bester.php?search=mac&value={$mac}\">New Bester (Development)</a>";
+	$newBester = "<a href=\"/monitoring/bester.php?search=mac&value={$mac}\">List View</a>";
 	$upModem = "<a href=\"monitoring/upModem.php?mac={$mac}\">Up Modem Tool</a>";
 	$dMac = getDottedMac($mac);
 	$flapList = "<a href=\"/monitoring/flapcheck/index.php?mac={$dMac}\">Flaps</a>";
 	$usageLink = "<a href=\"/reporting/modemDump.php?mac={$mac}\">Up and Download History</a>";
 	$dispatchLink= "<a href=\"http://dashboard.visionsystems.tv/dispatcher/assistant.php?mac={$mac}\">Dispatch&nbsp;Assistant</a>";
-	$body.="<tr><td colspan=\"{$colSpan}\"><input type=\"hidden\" name=\"mac\" value=\"{$mac}\">[ {$bester} | {$configure} | {$newBester} | {$upModem} | {$flapList} | {$usageLink} | {$dispatchLink} ]</td></tr>\n";
+	$body.="<tr><td colspan=\"{$colSpan}\"><input type=\"hidden\" name=\"mac\" value=\"{$mac}\">[ {$bester} | {$bester2} | {$configure} | {$newBester} | {$upModem} | {$flapList} | {$usageLink} | {$dispatchLink} ]</td></tr>\n";
 	$month=$day=$year=NULL;
 	if(isset($_GET['startmonth']))
 		$month=$_GET['startmonth'];
