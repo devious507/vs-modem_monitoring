@@ -21,7 +21,10 @@ $cmts_task = array(
 	'sh cable modem $mac conn' => 'Show Cable Modem Connectivity',
 	'sh cable modem $ip verbose' => 'Show Cable Modem Verbose',
 	'show run | incl power-level' => 'Show Target',
-	'show run' => 'Show Running Config'
+	'show run' => 'Show Running Config',
+	'show contr cable 3/0 | incl SNR' => 'Show Cable 3 SNR',
+	'show contr cable 4/0 | incl SNR' => 'Show Cable 4 SNR',
+	'show ip nat trans' => 'Show IP Nat Translations'
 );
 
 $mac="";
@@ -47,61 +50,14 @@ if(isset($_GET['mac'])) {
 		var_dump($_GET);
 		exit();
 	}
-	$info=get_modem_info($mac,$cmts);
-	$ar=preg_split("/\n/",$info);
-	unset($info);
-	foreach($ar as $line) {
-		$line=preg_replace("/ +/"," ",$line);
-		if(preg_match("/^IP Address/",$line)) {
-			$tmp=preg_split("/:/",$line);
-			$ip_addr=preg_replace("/ /","",$tmp[1]);
-		} elseif(preg_match("/^Prim Sid/",$line)) {
-			$tmp=preg_split("/:/",$line);
-			$modem_id=preg_replace("/ /","",$tmp[1]);
-		} elseif(preg_match("/^Host Interface/",$line)) {
-			$tmp=preg_split("/:/",$line);
-			$ttmp=preg_split("/\//",$tmp[1]);
-			$cable_iface=$ttmp[0]."/".$ttmp[1];
-			$cable_iface=preg_replace("/ /","",$cable_iface);
-		}
-	}
 	$task='show cable modem | include $mac\nshow int $cable modem $modem';
-	$task=preg_replace("/\\\$mac/",$mac,$task);
-	$task=preg_replace("/\\\$cable/",$cable_iface,$task);
-	$task=preg_replace("/\\\$modem/",$modem_id,$task);
-	$task=preg_replace("/\\\$ip/",$ip_addr,$task);
-	$task=preg_replace("/\\\\n/","\n",$task);
-	$doTask=$task;
+	$data=get_modem_info($mac,$cmts,$task);
 } else {
 	$mac=$_POST['mac'];
 	$cmts=$_POST['cmts'];
-	$info=get_modem_info($mac,$cmts);
-	$ar=preg_split("/\n/",$info);
-	unset($info);
-	foreach($ar as $line) {
-		$line=preg_replace("/ +/"," ",$line);
-		if(preg_match("/^IP Address/",$line)) {
-			$tmp=preg_split("/:/",$line);
-			$ip_addr=preg_replace("/ /","",$tmp[1]);
-		} elseif(preg_match("/^Prim Sid/",$line)) {
-			$tmp=preg_split("/:/",$line);
-			$modem_id=preg_replace("/ /","",$tmp[1]);
-		} elseif(preg_match("/^Host Interface/",$line)) {
-			$tmp=preg_split("/:/",$line);
-			$ttmp=preg_split("/\//",$tmp[1]);
-			$cable_iface=$ttmp[0]."/".$ttmp[1];
-			$cable_iface=preg_replace("/ /","",$cable_iface);
-		}
-	}
-
-	$task="{$_POST['task']}";
-	$task=preg_replace("/\\\$mac/",$mac,$task);
-	$task=preg_replace("/\\\$cable/",$cable_iface,$task);
-	$task=preg_replace("/\\\$modem/",$modem_id,$task);
-	$task=preg_replace("/\\\$ip/",$ip_addr,$task);
-	$task=preg_replace("/\\\\n/","\n",$task);
-	$doTask=$task;
+	$data=get_modem_info($mac,$cmts,$_POST['task']);
 }
+$doTask=$data['task'];
 $sql='';
 if(isset($_POST['task'])) {
 	$myTask=$_POST['task'];
@@ -121,8 +77,8 @@ $backLink="<a href=\"/monitoring/modemHistory.php?mac={$sysMac}\">Modem History<
 $body="<form method=\"post\" action=\"/monitoring/cmtsTool.php\">\n";
 $body.="<table cellpadding=\"3\" cellspacing=\"0\" border=\"1\" width=\"80%\">\n";
 $body.="\t<tr><td>CMTS</td><td>".make_cmts_list($cmts_list,$myCMTS)."</td><td>CMTS Task</td><td>".make_task_list($cmts_task,$myTask)."</td></tr>\n";
-$body.="\t<tr><td>Mac Addr:</td><td><input type=\"text\" name=\"mac\" value=\"{$mac}\"></td><td>IP Address</td><td><input type=\"text\" name=\"ip_address\" value=\"{$ip_addr}\"></td></tr>\n";
-$body.="\t<tr><td>Cable Iface</td><td><input type=\"text\" name=\"cable_iface\" value=\"{$cable_iface}\"></td><td>Modem ID</td><td><input type=\"text\" name=\"modem_id\" value=\"{$modem_id}\"></td></tr>\n";
+$body.="\t<tr><td>Mac Addr:</td><td><input type=\"text\" name=\"mac\" value=\"{$data['mac']}\"></td><td>IP Address</td><td><input type=\"text\" name=\"ip_address\" value=\"{$data['ip_addr']}\"></td></tr>\n";
+$body.="\t<tr><td>Cable Iface</td><td><input type=\"text\" name=\"cable_iface\" value=\"{$data['cable_iface']}\"></td><td>Modem ID</td><td><input type=\"text\" name=\"modem_id\" value=\"{$data['modem_id']}\"></td></tr>\n";
 $body.="\t<tr><td colspan=\"4\"><input type=\"submit\" value=\"Update\"> {$backLink}</td></tr>\n";
 if(isset($doTask)) {
 	$result= connectCMTS($cmts, $doTask);
@@ -139,7 +95,12 @@ if(isset($doTask)) {
 		}
 		$result.=$line."\n";
 	}
-	$body.="\t<tr><td colspan=\"4\"><pre>{$result}</pre></td></tr>";
+	if($_POST['task'] == 'show cable modem | include $mac\nshow int $cable modem $modem') {
+		$body.="\t<tr><td colspan=\"4\"><pre>{$result}</pre></td></tr>";
+	} else {
+		$body.="\t<tr><td colspan=\"4\"><pre>{$result}</pre></td></tr>";
+		//$body.="\t<tr><td colspan=\"4\"><textarea rows=\"20\" cols=\"100\" readonly=\"readonly\">{$result}</textarea></td></tr>";
+	}
 }
 $body.="</table>\n";
 $body.="</form>\n";
@@ -148,10 +109,37 @@ buildPage($body,$sql);
 
 
 
-function get_modem_info($mac,$cmts) {
+function get_modem_info($mac,$cmts,$task) {
 	$mac=formatMacCisco($mac);
+	$rv['mac']=$mac;
 	$cmd="show cable modem {$mac}  verbose | incl (Host Interface|IP Address|Prim Sid)";
-	return connectCMTS($cmts, $cmd);
+	$info=connectCMTS($cmts,$cmd);
+	$ar=preg_split("/\n/",$info);
+	unset($info);
+	foreach($ar as $line) {
+		$line=preg_replace("/ +/"," ",$line);
+		$line=preg_replace("/\n/","",$line);
+		$line=preg_replace("/\r/","",$line);
+		if(preg_match("/^IP Address/",$line)) {
+			$tmp=preg_split("/:/",$line);
+			$rv['ip_addr']=preg_replace("/ /","",$tmp[1]);
+		} elseif(preg_match("/^Prim Sid/",$line)) {
+			$tmp=preg_split("/:/",$line);
+			$rv['modem_id']=preg_replace("/ /","",$tmp[1]);
+		} elseif(preg_match("/^Host Interface/",$line)) {
+			$tmp=preg_split("/:/",$line);
+			$ttmp=preg_split("/\//",$tmp[1]);
+			$cable_iface=$ttmp[0]."/".$ttmp[1];
+			$rv['cable_iface']=preg_replace("/ /","",$cable_iface);
+		}
+	}
+	$task=preg_replace("/\\\$mac/",$rv['mac'],$task);
+	$task=preg_replace("/\\\$cable/",$rv['cable_iface'],$task);
+	$task=preg_replace("/\\\$modem/",$rv['modem_id'],$task);
+	$task=preg_replace("/\\\$ip/",$rv['ip_addr'],$task);
+	$task=preg_replace("/\\\\n/","\n",$task);
+	$rv['task']=$task;
+	return $rv;
 }
 function formatMacCisco($mac) {
 	$mac=strtolower($mac);
