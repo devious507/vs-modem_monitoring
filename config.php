@@ -43,7 +43,7 @@ define('CVC_END','1299');
 define('SUPER_USER','admin');
 define('SUPER_PASS','docsis');
 define('USER','csr');
-define('PASS','csr');
+define('PASS','csr123');
 
 // Nothing to change below this line
 require_once("functions.php");
