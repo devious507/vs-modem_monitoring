@@ -1,7 +1,7 @@
 <?php
 
 $_COOKIE['username']='csr';
-$_COOKIE['password']='csr';
+$_COOKIE['password']='csr123';
 require_once("config.php");
 
 if(isset($_GET['mac']) AND strlen($_GET['mac'])==12) {
