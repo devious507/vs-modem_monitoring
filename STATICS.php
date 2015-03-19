@@ -84,6 +84,12 @@ $statics['e4839972976c'] = '38.108.138.71';
 // 38.108.138.227  dhcp    001c.1142.2a75  N 
 $statics['001c11422a75'] = '38.108.138.227';
 
+$statics['001c11422ab9'] = '38.108.138.117';
+$statics['e48399729796'] = '38.108.138.123';
+
+
+// weston office
+$statics['442b037ed3cf'] = '38.108.141.83';
 
 $db = connect();
 $sql="UPDATE dhcp_leases SET dynamic_flag='YES' WHERE dynamic_flag='NO'";
@@ -96,6 +102,7 @@ foreach($statics as $k=>$v) {
 	$end   = date('Y-m-d h:i:s',$endTstamp);
 	$sql = "INSERT INTO dhcp_leases VALUES ('{$ip}','{$mac}','{$start}','{$end}','{$start}','NO','NO','NEWPC','999999','abcd1234abcd','1','','1')";
 	$sql.= " ON DUPLICATE KEY UPDATE dynamic_flag='NO', end_time='{$end}'";
+	print $sql; print "\n";
 	$db->query($sql);
 }
 
