@@ -95,10 +95,12 @@ if( ($_COOKIE['username'] == SUPER_USER) && ($_COOKIE['password'] == SUPER_PASS)
         $menu2 .="</ul>";
 } else {
 	if(php_sapi_name() != 'cli') { 
-		if(!preg_match('/API.php/',$_SERVER['REQUEST_URI'])) {
+		if(preg_match('/API.php/',$_SERVER['REQUEST_URI'])) {
+		} elseif((preg_match("/ATA-JSON.php/",$_SERVER['REQUEST_URI']))) {
+		} else {
 			doLoginPage();
 			exit();
-		}
+		} 
 	}
 }
 require_once("MDB2.php");
