@@ -77,6 +77,7 @@ if(isset($type3)) {
 
 
 
+//print $rrd; exit();
 header("Content-type: image/png"); system($rrd);
 //print $rrd;
 ?>

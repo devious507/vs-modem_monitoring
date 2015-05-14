@@ -91,6 +91,15 @@ $statics['e48399729796'] = '38.108.138.123';
 // weston office
 $statics['442b037ed3cf'] = '38.108.141.83';
 
+// 30609
+$statics['001c11f53fee'] = '38.108.138.10';
+
+// 30648
+$statics['001c11422a9e'] = '38.108.141.24';
+// 30613
+$statics['001c11f53fed'] = '38.108.138.32';
+
+
 $db = connect();
 $sql="UPDATE dhcp_leases SET dynamic_flag='YES' WHERE dynamic_flag='NO'";
 $db->query($sql);
