@@ -2,7 +2,7 @@
 
 
 define("MAX_DELTA","9.9");
-define("MAX_MODEMS_TO_SCAN",'100');
+define("MAX_MODEMS_TO_SCAN",'9999');
 $rrd_dir="/var/www/monitoring/rrd/";
 
 $end=time();
