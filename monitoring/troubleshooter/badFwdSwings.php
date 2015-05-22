@@ -2,7 +2,11 @@
 
 require_once("../../config.php");
 
-$body="<a href=\"/monitoring/troubleshooter/badFwdSwings.php?menu=false\">Hide Menus</a><br>&nbsp;<hr>";
+if(isset($_GET['menu'])) {
+	$body="<a href=\"/monitoring/troubleshooter/badFwdSwings.php\">Show Menus</a><br>&nbsp;<hr>";
+} else {
+	$body="<a href=\"/monitoring/troubleshooter/badFwdSwings.php?menu=false\">Hide Menus</a><br>&nbsp;<hr>";
+}
 $body.=file_get_contents("/var/www/monitoring/BAD_FWD_SWINGS");
 
 
