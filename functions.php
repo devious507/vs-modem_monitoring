@@ -1,7 +1,7 @@
 <?php
 
 require_once("MDB2.php");
-define("SP_TARGET",13);
+define("SP_TARGET",21);
 define("OTHER_TARGET",7);
 
 $config['dtypes']=array("IP","2IP","INT8","UINT8","INT16","UINT16","INT32","UINT32","CHAR","SUB-OPT");
