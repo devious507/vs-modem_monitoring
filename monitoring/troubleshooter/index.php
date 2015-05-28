@@ -31,6 +31,7 @@ $body.="<li><a href=\"monitoring/troubleshooter/duplicateAcctIDs.php\">Accounts 
 $body.="<li><a href=\"monitoring/troubleshooter/unMatchedModems.php\">Unmatched Accounts</a></li>";
 $body.="<li><a href=\"monitoring/troubleshooter/referenceOverview.php\">All Reference Reverse</a></li>";
 $body.="<li><a href=\"monitoring/troubleshooter/referenceOverview.php?property=Sun%20Prairie\">SP Reference Reverse</a></li>";
+$body.="<li><a href=\"monitoring/troubleshooter/research1.php\">Online Times and Resyncs Research</a></li>";
 
 $body.="</ul>";
 buildPage($body);
