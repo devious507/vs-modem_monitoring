@@ -1,5 +1,2 @@
-SELECT d.ip FROM (SELECT c.building,a.* FROM (select m.mac,m.ip,d.subnum FROM modem_history AS m LEFT OUTER JOIN docsis_modem AS d ON m.mac=d.modem_macaddr) AS a LEFT OUTER JOIN customer_address AS c ON c.subnum=a.subnum) as d WHERE d.building='1233'
-
-
 delete from research1;
 insert into research1 SELECT d.mac,d.ip,d.subnum,d.building,d.property,d.fwdrx,d.fwdsnr,d.revtx,d.revrx,d.revsnr,NULL,NULL FROM (SELECT c.building,c.property,a.* FROM (select m.mac,m.ip,d.subnum,m.fwdrx,m.fwdsnr,m.revtx,m.revrx,m.revsnr FROM modem_history AS m LEFT OUTER JOIN docsis_modem AS d ON m.mac=d.modem_macaddr) AS a LEFT OUTER JOIN customer_address AS c ON c.subnum=a.subnum) as d WHERE d.building='1233';

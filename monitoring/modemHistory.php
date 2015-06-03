@@ -175,8 +175,8 @@ if(strlen($mac) == 12) {
 		$tSel3 = typeSelector($_GET['type3'], 'type3');
 	} else {
 		$typeSel = typeSelector();
-		$tSel2 = typeSelector(NULL, 'type2');
-		$tSel3 = typeSelector(NULL, 'type3');
+		$tSel2 = typeSelector('fwdsnr', 'type2');
+		$tSel3 = typeSelector('revsnr', 'type3');
 	}
 	$body.="<tr><td>Graph Type</td><td colspan=\"3\">1 {$typeSel}<br>2 {$tSel2}<br>3 {$tSel3}</td><td colspan=\"5\">&nbsp;&nbsp;&nbsp;<input type=\"submit\" value=\"Graph It\"></td></tr>\n";
 	if(isset($_GET['graphtype']))
