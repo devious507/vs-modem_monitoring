@@ -26,6 +26,8 @@ $body.='<li><a href="monitoring/troubleshooter/nodeBuildingPropertyAvgs.php?type
 $body.='<li><a href="monitoring/troubleshooter/report_downstreamsByConfig.php">Modem Configuration Counts</a></li>';
 $body.="<li><a href=\"monitoring/troubleshooter/badFwdSwings.php\">Bad Forward Swings</a></li>";
 
+$body.="<li>-----------Map Stuff----------------------------------------------------------------------------------------</li>";
+$body.="<li><a href=\"monitoring/map.php\">Modem Map</a></li>";
 $body.="<li>-----------Development--------------------------------------------------------------------------------------</li>";
 $body.="<li><a href=\"monitoring/troubleshooter/duplicateAcctIDs.php\">Accounts w/ More than 1 Modem</a></li>";
 $body.="<li><a href=\"monitoring/troubleshooter/unMatchedModems.php\">Unmatched Accounts</a></li>";
