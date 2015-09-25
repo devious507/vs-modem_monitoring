@@ -80,6 +80,7 @@ $customerInfo.="<hr><hr><table cellpadding=\"5\" cellspacing=\"0\" border=\"1\" 
 $customerInfo.=sprintf("<tr><td colspan=\"2\"><b>MTD Totals</b></td></tr>");
 $customerInfo.=sprintf("<tr><td>Download Total</td><td align=\"right\">%.1f GB</td></tr>",$d);
 $customerInfo.=sprintf("<tr><td>Upload Total</td><td align=\"right\">%.1f GB</td></tr>",$u);
+$customerInfo.=sprintf("<tr><td>Upload Total</td><td align=\"right\">%.1f GB</td></tr>",$u+$d);
 $customerInfo.="</table><hr><hr>";
 $sql="SELECT month,year,modem_macaddr,down_delta/1024/1024/1024 as down,up_delta/1024/1024/1024 as up,(down_delta+up_delta)/1024/1024/1024 as total FROM monthly_usage WHERE sub_id='{$wincable}' ORDER BY year DESC,month DESC LIMIT 12";
 $res=$db->query($sql);

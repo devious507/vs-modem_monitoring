@@ -129,7 +129,7 @@ function get_modem_info($mac,$cmts,$task) {
 		} elseif(preg_match("/^Host Interface/",$line)) {
 			$tmp=preg_split("/:/",$line);
 			$ttmp=preg_split("/\//",$tmp[1]);
-			$cable_iface=$ttmp[0]."/".$ttmp[1];
+			$cable_iface=$ttmp[0]."/".$ttmp[1]."/".$ttmp[2];
 			$rv['cable_iface']=preg_replace("/ /","",$cable_iface);
 		}
 	}

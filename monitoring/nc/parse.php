@@ -18,22 +18,32 @@ unset($block);
 
 $pChan[' ']='Unk';
 $pChan['']='Unk';
-$pChan['In3/0:0']='111Mhz';
-$pChan['In3/0:1']='117Mhz';
-$pChan['In3/0:2']='123Mhz';
-$pChan['In3/0:3']='129Mhz';
-$pChan['In3/1:0']='141Mhz';
-$pChan['In3/1:1']='147Mhz';
-$pChan['In3/1:2']='153Mhz';
-$pChan['In3/1:3']='159Mhz';
-$pChan['In4/0:0']='873Mhz';
-$pChan['In4/0:1']='879Mhz';
-$pChan['In4/0:2']='885Mhz';
-$pChan['In4/0:3']='891Mhz';
-$pChan['In4/1:0']='897Mhz';
-$pChan['In4/1:1']='903Mhz';
-$pChan['In4/1:2']='909Mhz';
-$pChan['In4/1:3']='915Mhz';
+$pChan['In8/0/0:0']='111Mhz';
+$pChan['In8/0/0:1']='117Mhz';
+$pChan['In8/0/0:2']='123Mhz';
+$pChan['In8/0/0:3']='129Mhz';
+
+$pChan['In8/0/1:0']='141Mhz';
+$pChan['In8/0/1:1']='147Mhz';
+$pChan['In8/0/1:2']='153Mhz';
+$pChan['In8/0/1:3']='159Mhz';
+
+$pChan['In8/1/0:0']='873Mhz';
+$pChan['In8/1/0:1']='879Mhz';
+$pChan['In8/1/0:2']='885Mhz';
+$pChan['In8/1/0:3']='891Mhz';
+
+$pChan['In8/1/1:0']='897Mhz';
+$pChan['In8/1/1:1']='903Mhz';
+$pChan['In8/1/1:2']='909hhz';
+$pChan['In8/1/1:3']='915Mhz';
+
+$pChan['In8/1/2:0']='921Mhz';
+$pChan['In8/1/2:1']='927Mhz';
+$pChan['In8/1/2:2']='933hhz';
+$pChan['In8/1/2:3']='939Mhz';
+
+
 $db=connect();
 foreach($lines as $line) {
 	$line = squeezeTrim($line);

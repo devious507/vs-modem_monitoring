@@ -1,7 +1,8 @@
 <?php
 
 require_once("MDB2.php");
-define("SP_TARGET",21);
+define("SP_TARGET",20);
+define("WESTON_TARGET",0);
 define("OTHER_TARGET",7);
 
 $config['dtypes']=array("IP","2IP","INT8","UINT8","INT16","UINT16","INT32","UINT32","CHAR","SUB-OPT");
@@ -48,6 +49,10 @@ function revTxColor($val) {
 function revRxColor($val,$property) {
 	if($property == 'Sun Prairie') {
 		$target=SP_TARGET;
+	} elseif($property == "Weston Park") {
+		$target=WESTON_TARGET;
+	} elseif($property == "Oakland Pointe") {
+		$target=WESTON_TARGET;
 	} else	{
 		$target=OTHER_TARGET;
 	}
