@@ -1,5 +1,5 @@
-INSERT INTO monthly_usage (select '8' as month,'2015' as year,modem_macaddr,sub_id,sum(down_delta),sum(up_delta) from cable_usage WHERE DATE_FORMAT(entry_time, '%Y-%m-01')='2015-08-01' GROUP BY modem_macaddr,sub_id);
+INSERT INTO monthly_usage (select '10' as month,'2015' as year,modem_macaddr,sub_id,sum(down_delta),sum(up_delta) from cable_usage WHERE DATE_FORMAT(entry_time, '%Y-%m-01')='2015-10-01' GROUP BY modem_macaddr,sub_id);
 
-DELETE FROM cable_usage WHERE DATE_FORMAT(entry_time, '%Y-%m-01')='2015-08-01';
+DELETE FROM cable_usage WHERE DATE_FORMAT(entry_time, '%Y-%m-01')='2015-10-01';
 
 

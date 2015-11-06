@@ -4,6 +4,7 @@ require_once("MDB2.php");
 define("SP_TARGET",20);
 define("WESTON_TARGET",0);
 define("OTHER_TARGET",7);
+define("GRAYS_TARGET",16);
 
 $config['dtypes']=array("IP","2IP","INT8","UINT8","INT16","UINT16","INT32","UINT32","CHAR","SUB-OPT");
 $config['nettypes']=array("CM","CPE","MTA");
@@ -53,6 +54,8 @@ function revRxColor($val,$property) {
 		$target=WESTON_TARGET;
 	} elseif($property == "Oakland Pointe") {
 		$target=WESTON_TARGET;
+	} elseif($property == "Grays Lake") {
+		$target=GRAYS_TARGET;
 	} else	{
 		$target=OTHER_TARGET;
 	}
