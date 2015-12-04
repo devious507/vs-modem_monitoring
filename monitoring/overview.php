@@ -68,9 +68,9 @@ while(($row=$results->fetchRow())==true) {
 	$body.=buildCell($row['min_revtx'],'revtx');
 	$body.=buildCell($row['avg_revtx'],'revtx');
 	$body.=buildCell($row['max_revtx'],'revtx');
-	$body.=buildCell($row['min_revrx'],'revrx',$row['property']);
-	$body.=buildCell($row['avg_revrx'],'revrx',$row['property']);
-	$body.=buildCell($row['max_revrx'],'revrx',$row['property']);
+	$body.=buildCell($row['min_revrx'],'revrx',$row['property'],$row['node']);
+	$body.=buildCell($row['avg_revrx'],'revrx',$row['property'],$row['node']);
+	$body.=buildCell($row['max_revrx'],'revrx',$row['property'],$row['node']);
 	$body.=buildCell($row['min_revsnr'],'revsnr');
 	$body.=buildCell($row['avg_revsnr'],'revsnr');
 	$body.=buildCell($row['max_revsnr'],'revsnr');
@@ -80,7 +80,7 @@ $body.="</table>\n";
 buildPage($body);
 
 
-function buildCell($num,$hint,$property='') {
+function buildCell($num,$hint,$property='',$node='') {
 	switch($hint){
 	case "fwdrx":
 		$color=fwdRxColor($num);
@@ -92,7 +92,7 @@ function buildCell($num,$hint,$property='') {
 		$color=revTxColor($num);
 		break;
 	case "revrx":
-		$color=revRxColor($num,$property);
+		$color=revRxColor($num,$property,$node);
 		break;
 	case "revsnr":
 		$color=revSnrColor($num,$property);

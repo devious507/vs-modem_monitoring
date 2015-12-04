@@ -1,7 +1,8 @@
 <?php
 
 require_once("MDB2.php");
-define("SP_TARGET",20);
+define("SPA_TARGET",20);
+define("SPB_TARGET",15);
 define("WESTON_TARGET",0);
 define("OTHER_TARGET",7);
 define("GRAYS_TARGET",16);
@@ -47,9 +48,20 @@ function revTxColor($val) {
 		return "#cc3333";
 	}
 }
-function revRxColor($val,$property) {
+function revRxColor($val,$property,$node=0) {
 	if($property == 'Sun Prairie') {
-		$target=SP_TARGET;
+		switch($node) {
+		case 5:
+		case 6:
+		case 7:
+		case 8:
+		case 9:
+			$target=SPB_TARGET;
+			break;
+		default:
+			$target=SPA_TARGET;
+			break;
+		}
 	} elseif($property == "Weston Park") {
 		$target=WESTON_TARGET;
 	} elseif($property == "Oakland Pointe") {
