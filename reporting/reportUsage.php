@@ -7,6 +7,7 @@ if(!isset($_GET['direction'])) {
 	print "<a href=\"reportUsage.php?direction=up\">Up</a><br>";
 	print "<a href=\"reportUsage.php?direction=down\">Down</a><br>";
 	print "<a href=\"reportUsage.php?direction=combined\">Combined</a><br>";
+	print "<a href=\"billingReport.php\">Billing Report</a><br>";
 	print "</body></html>";
 	exit();
 }

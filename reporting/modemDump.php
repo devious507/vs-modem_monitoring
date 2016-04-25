@@ -64,6 +64,10 @@ $sql="SELECT * FROM customer_address WHERE subnum='{$wincable}'";
 $res=$db->query($sql);
 $row=$res->fetchRow();
 $customerInfo="<hr>".$mac."<hr>";
+$tmp=preg_split("/ /",$row['name']);
+$graph_name=$tmp[count($tmp)-1];
+$graph_subnum=$row['subnum'];
+
 $customerInfo.=$row['name']."<br>";
 $customerInfo.=$row['address']."<br>";
 $customerInfo.=$row['apartment']."<br>";
@@ -78,11 +82,20 @@ $d=floatval($row['d'])/1024/1024/1024;
 $u=floatval($row['u'])/1024/1024/1024;
 $customerInfo.="<hr><hr><table cellpadding=\"5\" cellspacing=\"0\" border=\"1\" width=\"100%\">";
 $customerInfo.=sprintf("<tr><td colspan=\"2\"><b>MTD Totals</b></td></tr>");
+
+// Bring in the graphs that were recently done (4/20/16)
+$url="http://38.108.136.6/reporting/modemDump-JSON.php?acctnum={$graph_subnum}&lastname={$graph_name}";
+$fh=fopen($url,'r');
+$graph_data=json_decode(stream_get_contents($fh));
+fclose($fh);
+$img="<img src=\"http://www.visionsystems.tv/quota/quotaGraph.php?quota={$graph_data->quota}&use={$graph_data->usage}\">";
+
+$customerInfo.=sprintf("<tr><td colspan=\"2\">%s</td></tr>",$img);
 $customerInfo.=sprintf("<tr><td>Download Total</td><td align=\"right\">%.1f GB</td></tr>",$d);
 $customerInfo.=sprintf("<tr><td>Upload Total</td><td align=\"right\">%.1f GB</td></tr>",$u);
 $customerInfo.=sprintf("<tr><td>Upload Total</td><td align=\"right\">%.1f GB</td></tr>",$u+$d);
 $customerInfo.="</table><hr><hr>";
-$sql="SELECT month,year,modem_macaddr,down_delta/1024/1024/1024 as down,up_delta/1024/1024/1024 as up,(down_delta+up_delta)/1024/1024/1024 as total FROM monthly_usage WHERE sub_id='{$wincable}' ORDER BY year DESC,month DESC LIMIT 12";
+$sql="SELECT month,year,modem_macaddr,down_delta/1024/1024/1024 as down,up_delta/1024/1024/1024 as up,(down_delta+up_delta)/1024/1024/1024 as total FROM monthly_usage WHERE sub_id='{$wincable}' ORDER BY year DESC,cast(month AS unsigned) DESC LIMIT 12";
 $res=$db->query($sql);
 
 $customerInfo.="<table cellpadding=\"5\" cellspacing=\"0\" border=\"1\" width=\"100%\">";
