@@ -86,6 +86,8 @@ function getList($db,$month,$year,$config_piece,$quota,$mtd) {
 			$projected=sprintf("%.1f",$used/date('d')*date('t'));
 			if($projected > $quota) {
 				$pTail="bgcolor=\"red\"";
+			} elseif($projected > $quota*.9) {
+				$pTail="bgcolor=\"yellow\"";
 			} else {
 				$pTail='';
 			}
