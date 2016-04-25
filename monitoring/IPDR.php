@@ -76,14 +76,16 @@ while( true )
             $location = '/var/www/monitoring/IPDR_RECORDS/' . $client[ 'address' ] . "/";
             if( file_exists( $location ) === false )
             {
-                echo "* Creating folder " . $location . "\n";
-                mkdir( $location );
+                //echo "* Creating folder " . $location . "\n";
+                //mkdir( $location );
             }
  
             $location .= $client[ 'filename' ];
             echo "{$count} * Writing on " . $location . "\n";
 	    $count++;
-            file_put_contents( $location, $buffer, FILE_APPEND );
+	    if($client['address'] == '192.168.251.10') {
+		    file_put_contents( $location, $buffer, FILE_APPEND );
+	    }
         }
     }
     // Sleep 10 micro seconds (just to avoid overloading the CPU)
