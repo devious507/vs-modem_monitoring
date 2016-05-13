@@ -13,7 +13,7 @@ if(isset($_GET['type3']))
 
 $start=$_GET['start'];
 $end=$_GET['end'];
-$mac=$_GET['mac'];
+$mac=strtoupper($_GET['mac']);
 if($start > $end) {
 	$a=$start;
 	$start=$end;

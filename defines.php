@@ -42,6 +42,6 @@ define('CVC_END','1299');
 // Defines for Super User and Std User
 define('SUPER_USER','admin');
 define('SUPER_PASS','docsis');
-define('USER','csr');
-define('PASS','csr123');
+define('USER','tech');
+define('PASS','VisionTech');
 ?>
