@@ -139,7 +139,7 @@ if(strlen($mac) == 12) {
 		$body.="</tr>\n";
 	$bester = "<a href=\"http://bester.visionsystems.tv:8080/modem/upmodem.php?mac={$mac}\">Bester</a>";
 	$bester2 = "<a href=\"/monitoring/cmtsTool.php?mac={$mac}\">Bester2</a>";
-	$pinger = "<a href=\"http://dashboard.visionsystems.tv/pinger/v2/index.php?mac={$mac}&cmts=dm2&auto=true&count=70\">Ping</a>";
+	$pinger = "<a href=\"http://dashboard.visionsystems.tv/pinger/v2/index.php?mac={$mac}&cmts=dm2&auto=true&repeat=70\">Ping</a>";
 	$configure = "<a href=\"http://38.108.136.6/modem.php?search=modem_macaddr&value={$mac}\">Config</a>";
 	$newBester = "<a href=\"/monitoring/bester.php?search=mac&value={$mac}\">List View</a>";
 	$upModem = "<a href=\"monitoring/upModem.php?mac={$mac}\">Up Mdm Tool</a>";

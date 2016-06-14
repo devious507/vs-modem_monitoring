@@ -1,9 +1,7 @@
 <?php
 
 require_once("config.php");
-
-define("LOGIN_PASS","gamester");
-define("ENABLE_PASS","renter30");
+require_once("function_getModemInfo.php");
 
 $cmts_list=array(
 	"Des Moines"=>"38.108.136.1",
@@ -74,12 +72,13 @@ if(isset($_POST['cmts'])) {
 $sysMac=$mac;
 $sysMac=strtoupper(preg_replace("/(\.|:|-)/","",$sysMac));
 $backLink="<a href=\"/monitoring/modemHistory.php?mac={$sysMac}\">Modem History</a>";
+$top25Link="<a href=\"http://dashboard.visionsystems.tv/noc/getTop25Modems.php\">Biggest Data Users</a>";
 $body="<form method=\"post\" action=\"/monitoring/cmtsTool.php\">\n";
 $body.="<table cellpadding=\"3\" cellspacing=\"0\" border=\"1\" width=\"80%\">\n";
 $body.="\t<tr><td>CMTS</td><td>".make_cmts_list($cmts_list,$myCMTS)."</td><td>CMTS Task</td><td>".make_task_list($cmts_task,$myTask)."</td></tr>\n";
 $body.="\t<tr><td>Mac Addr:</td><td><input type=\"text\" name=\"mac\" value=\"{$data['mac']}\"></td><td>IP Address</td><td><input type=\"text\" name=\"ip_address\" value=\"{$data['ip_addr']}\"></td></tr>\n";
 $body.="\t<tr><td>Cable Iface</td><td><input type=\"text\" name=\"cable_iface\" value=\"{$data['cable_iface']}\"></td><td>Modem ID</td><td><input type=\"text\" name=\"modem_id\" value=\"{$data['modem_id']}\"></td></tr>\n";
-$body.="\t<tr><td colspan=\"4\"><input type=\"submit\" value=\"Update\"> {$backLink}</td></tr>\n";
+$body.="\t<tr><td colspan=\"4\"><input type=\"submit\" value=\"Update\"> {$backLink} | {$top25Link} </td></tr>\n";
 if(isset($doTask)) {
 	$result= connectCMTS($cmts, $doTask);
 	$ar=preg_split("/\n/",$result);
@@ -102,45 +101,36 @@ if(isset($doTask)) {
 		//$body.="\t<tr><td colspan=\"4\"><textarea rows=\"20\" cols=\"100\" readonly=\"readonly\">{$result}</textarea></td></tr>";
 	}
 }
+
+
+/*
+$body.="<tr><td colspan=\"4\">Move Modem to New Base Frequency</a></td></tr>\n";
+$body.=freqBlock($mac,$cmts,array(111,117,123,129),"C8/0/0:");
+$body.=freqBlock($mac,$cmts,array(141,147,153,159),"C8/0/1:");
+$body.=freqBlock($mac,$cmts,array(873,879,885,891),"C8/1/0:");
+$body.=freqBlock($mac,$cmts,array(897,903,909,915),"C8/1/1:");
+ */
+
 $body.="</table>\n";
 $body.="</form>\n";
+
 
 buildPage($body,$sql);
 
 
 
-function get_modem_info($mac,$cmts,$task) {
-	$mac=formatMacCisco($mac);
-	$rv['mac']=$mac;
-	$cmd="show cable modem {$mac}  verbose | incl (Host Interface|IP Address|Prim Sid)";
-	$info=connectCMTS($cmts,$cmd);
-	$ar=preg_split("/\n/",$info);
-	unset($info);
-	foreach($ar as $line) {
-		$line=preg_replace("/ +/"," ",$line);
-		$line=preg_replace("/\n/","",$line);
-		$line=preg_replace("/\r/","",$line);
-		if(preg_match("/^IP Address/",$line)) {
-			$tmp=preg_split("/:/",$line);
-			$rv['ip_addr']=preg_replace("/ /","",$tmp[1]);
-		} elseif(preg_match("/^Prim Sid/",$line)) {
-			$tmp=preg_split("/:/",$line);
-			$rv['modem_id']=preg_replace("/ /","",$tmp[1]);
-		} elseif(preg_match("/^Host Interface/",$line)) {
-			$tmp=preg_split("/:/",$line);
-			$ttmp=preg_split("/\//",$tmp[1]);
-			$cable_iface=$ttmp[0]."/".$ttmp[1]."/".$ttmp[2];
-			$rv['cable_iface']=preg_replace("/ /","",$cable_iface);
-		}
+function freqBlock($mac,$cmts,$freqs,$base) {
+	$rv="<tr>";
+	$count=0;
+	foreach($freqs as $f) {
+		$if="&nbsp;(".$base.$count.")&nbsp;";
+		$rv.="<td><a href=\"monitoring/moveModem.php?mac={$mac}&cmts={$cmts}&freq={$f}000000\">{$f}MHz</a>{$if}</td>";
+		$count++;
 	}
-	$task=preg_replace("/\\\$mac/",$rv['mac'],$task);
-	$task=preg_replace("/\\\$cable/",$rv['cable_iface'],$task);
-	$task=preg_replace("/\\\$modem/",$rv['modem_id'],$task);
-	$task=preg_replace("/\\\$ip/",$rv['ip_addr'],$task);
-	$task=preg_replace("/\\\\n/","\n",$task);
-	$rv['task']=$task;
+	$rv.="</tr>\n";
 	return $rv;
 }
+
 function formatMacCisco($mac) {
 	$mac=strtolower($mac);
 	$mac=preg_replace("/\./","",$mac);
@@ -177,85 +167,4 @@ function make_cmts_list($cmts,$myCMTS) {
 	$rv.="</select>";
 	return $rv;
 }
-function connectCMTS($ipaddr, $cmtscmd="", $noerr=false, $debug=0) {
-	$loginpw=LOGIN_PASS;
-	$enablepw=ENABLE_PASS;
-
-	if (!$cmtscmd) {
-		return "";
-	}
-	if ($debug) {
-		echo "<pre>";
-	}
-	$sfp = fsockopen($ipaddr, 23, $errno, $errstr, 30);
-	if (!$sfp) {
-		if (!$noerr) {
-			echo "ERROR: $errno - $errstr<br />\n";
-		} else {
-			return "ERROR: $errno - $errstr<br />\n";
-		}
-	} else {
-		$sfpdata = fgets($sfp);//  var_ddump($sfpdata, $debug);
-		//    echo "<pre>telnet ";var_dump($sfpdata);echo "</pre>";
-
-		//  Looks like we have to handle Telnet negotiations:
-		//      IAC DO = chr(255); chr(253) => IAC WONT = chr(255); chr(252);
-		//    $retst = fwrite($sfp, str_replace(chr(253), chr(252), $sfpdata));
-		//    echo "<pre>retst ";var_dump($retst);echo "</pre>";
-		$sfpdata = fgets($sfp);//  var_ddump($sfpdata, $debug);
-		$sfpdata = fgets($sfp);//  var_ddump($sfpdata, $debug);
-		$sfpdata = fgets($sfp);//  var_ddump($sfpdata, $debug);
-		//    echo "<pre>telnet ";var_dump($sfpdata);echo "</pre>";
-
-		$retst = fwrite($sfp, $loginpw . "\nen\n" . $enablepw . "\nterminal length 0\nterminal width 0\n");
-		if ($retst == FALSE) {
-			die("SocketError, can't write:1");
-		}
-		$retst = fwrite($sfp, $cmtscmd);
-		if ($retst == FALSE) {
-			die("SocketError, can't write:2");
-		}
-		$sfpdata = fgets($sfp);     // First "Password: " prompt
-		var_ddump($sfpdata, $debug);
-		$sfpline = explode("\r\n", $sfpdata);
-		$sfpdata = $sfpline[0];
-		//    echo "<pre>telnet ";var_dump($sfpdata);echo "</pre>";
-		$retst = fwrite($sfp, "\nexit\n");
-		if ($retst == FALSE) {
-			die("SocketError, can't write:3");
-		}
-		$sfpdata = fgets($sfp);
-		var_ddump($sfpdata, $debug);
-		do {
-			$sfpdata = fgets($sfp);   // Second "Password: " prompt
-			var_ddump($sfpdata, $debug);
-			$sfpline = explode("\r\n", $sfpdata);
-			$sfpdata = $sfpline[0];
-			//    echo "<pre>telnet ";var_dump($sfpdata);echo "</pre>";
-		} while ($sfpdata != "Password: ");
-		$sfpdata = fgets($sfp);  var_ddump($sfpdata, $debug);
-		$sfpdata = fgets($sfp);  var_ddump($sfpdata, $debug);
-		$sfpdata = "";  $sfpdata2 = ""; $sfpdata3 = "";
-		do {
-			$sfpdata .= $sfpdata2;
-			if ($sfpdata3) {
-				$sfpdata2 = $sfpdata3;
-			}
-		} while ($sfpdata3 = fgets($sfp));
-		fclose($sfp);
-		if ($debug) {
-			echo "</pre>";
-		}
-		return $sfpdata;
-	}
-	if ($debug) {
-		echo "</pre>";
-	}
-	return "";
-}
-function var_ddump($data, $debug=0) {
-	if ($debug) {
-		var_dump($data);
-	}
-}
-
+?>

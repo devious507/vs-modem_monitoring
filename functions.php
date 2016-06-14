@@ -5,7 +5,7 @@ define("SPA_TARGET",20);
 define("SPB_TARGET",15);
 define("WESTON_TARGET",0);
 define("OTHER_TARGET",7);
-define("GRAYS_TARGET",16);
+define("GRAYS_TARGET",21);
 
 $config['dtypes']=array("IP","2IP","INT8","UINT8","INT16","UINT16","INT32","UINT32","CHAR","SUB-OPT");
 $config['nettypes']=array("CM","CPE","MTA");
