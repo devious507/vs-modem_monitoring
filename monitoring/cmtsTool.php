@@ -104,12 +104,12 @@ if(isset($doTask)) {
 
 
 /*
+ */
 $body.="<tr><td colspan=\"4\">Move Modem to New Base Frequency</a></td></tr>\n";
 $body.=freqBlock($mac,$cmts,array(111,117,123,129),"C8/0/0:");
 $body.=freqBlock($mac,$cmts,array(141,147,153,159),"C8/0/1:");
 $body.=freqBlock($mac,$cmts,array(873,879,885,891),"C8/1/0:");
 $body.=freqBlock($mac,$cmts,array(897,903,909,915),"C8/1/1:");
- */
 
 $body.="</table>\n";
 $body.="</form>\n";

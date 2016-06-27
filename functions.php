@@ -1,7 +1,7 @@
 <?php
 
 require_once("MDB2.php");
-define("SPA_TARGET",20);
+define("SPA_TARGET",15);
 define("SPB_TARGET",15);
 define("WESTON_TARGET",0);
 define("OTHER_TARGET",7);
