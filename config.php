@@ -53,6 +53,7 @@ if( ($_COOKIE['username'] == SUPER_USER) && ($_COOKIE['password'] == SUPER_PASS)
 	if(php_sapi_name() != 'cli') { 
 		if(preg_match('/API.php/',$_SERVER['REQUEST_URI'])) {
 		} elseif((preg_match("/ATA-JSON.php/",$_SERVER['REQUEST_URI']))) {
+		} elseif((preg_match("/primChannel.php/",$_SERVER['REQUEST_URI']))) {
 		} else {
 			doLoginPage();
 			exit();
