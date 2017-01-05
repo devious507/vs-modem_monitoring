@@ -41,14 +41,20 @@ if($mtd) {
 }
 $count=0;
 $db=connect();
-getList($db,$month,$year,112,350,$mtd);		// Config 112 is 30Meg, has 350GB Quota
-getList($db,$month,$year,114,500,$mtd);		// Config 114 is 50Meg, has 500GB Quota
-getList($db,$month,$year,109,1500,$mtd);	// Config 109 is 100Meg, has 1500GB Quota
+getList($db,$month,$year,110,250,$mtd);		// Config 110 is 15Meg, has 250GB Quota
+getList($db,$month,$year,112,350,$mtd);		// Config 112 is 30Meg, has 350GB Quota (Old / Bulk)
+getList($db,$month,$year,114,500,$mtd);		// Config 114 is 50Meg, has 500GB Quota (Old / Bulk)
+getList($db,$month,$year,102,350,$mtd);		// Config 102 is 55Meg, has 350Gb Quota
+getList($db,$month,$year,103,350,$mtd);		// Config 103 is 75Meg, has 350Gb Quota
+getList($db,$month,$year,109,1500,$mtd);	// Config 109 is 100Meg, has 1500GB Quota (Old)
+getList($db,$month,$year,100,1000,$mtd);	// Config 100 is 100Meg, has 1000GB Quota
 getList($db,$month,$year,113,4000,$mtd);	// Config 113 is 125Meg, has 4000GB Quota
+getList($db,$month,$year,105,2000,$mtd);	// Config 105 is 150Meg, has 2000GB Quota
+getList($db,$month,$year,106,2500,$mtd);	// Config 106 is 200Meg, has 2500Gb Quota
 print "</table></body></html>";
 
 function getList($db,$month,$year,$config_piece,$quota,$mtd) {
-	$sql="select distinct(subnum) from docsis_modem WHERE config_file='auto' and dynamic_config_file like '%,{$config_piece},%' ORDER BY subnum";
+	$sql="select distinct(subnum) from docsis_modem WHERE config_file='auto' and dynamic_config_file like '%,{$config_piece},%' AND quota=true ORDER BY subnum";
 	$results=$db->query($sql);
 	while(($row=$results->fetchRow()) == true) {
 		$subnum=$row['subnum'];

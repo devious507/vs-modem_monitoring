@@ -155,7 +155,7 @@ if(strlen($mac) == 12) {
 		$day=$_GET['startday'];
 	if(isset($_GET['startyear']))
 		$year=$_GET['startyear'];
-	$start=date_picker('start',$month,$day,$year);
+	$start=date_picker('start',$month,$day,$year,60*60*24*10);
 	$month=$day=$year=NULL;
 	if(isset($_GET['endmonth']))
 		$month=$_GET['endmonth'];

@@ -3,8 +3,8 @@
 require_once("MDB2.php");
 define("SPA_TARGET",15);
 define("SPB_TARGET",15);
-define("WESTON_TARGET",0);
-define("OTHER_TARGET",7);
+define("WESTON_TARGET",3);
+define("OTHER_TARGET",21);  // Was 7
 define("GRAYS_TARGET",21);
 
 $config['dtypes']=array("IP","2IP","INT8","UINT8","INT16","UINT16","INT32","UINT32","CHAR","SUB-OPT");
@@ -173,6 +173,7 @@ function genConfigSelect($name,$cfg_start,$cfg_end,$value) {
 		$selected = 0;
 	}
 	$sql="SELECT cfg_id,comment FROM config_modem WHERE cfg_id >= {$cfg_start} AND cfg_id <= {$cfg_end} ORDER BY cfg_id";
+	$sql="SELECT cfg_id,comment FROM config_modem WHERE cfg_id >= {$cfg_start} AND cfg_id <= {$cfg_end} ORDER BY sortorder,cfg_id";
 	//phpinfo();exit();
 	$name_popup=$name;
 	$name_popup="<a class=\"blackNoDecoration\" onmouseover=\"popup('{$name}')\" href=\"{$_SERVER['REQUEST_URI']}\">{$name}</a>";
@@ -335,16 +336,17 @@ function entryLine($lbl,$value='') {
 	}
 }
 
-function date_picker($name, $month=NULL, $day=NULL, $year=NULL)
+function date_picker($name, $month=NULL, $day=NULL, $year=NULL,$minus=0)
 {
 	$startyear = date('Y')-2;
 	$endyear = date('Y');
+	$epoch=time()-$minus;
 	if($month==NULL)
-		$month=date('m');
+		$month=date('m',$epoch);
 	if($day==NULL) 
-		$day=date('d');
+		$day=date('d',$epoch);
 	if($year==NULL) 
-		$year=date('Y');
+		$year=date('Y',$epoch);
 
 	$months=array('','January','February','March','April','May',
 		'June','July','August', 'September','October','November','December');

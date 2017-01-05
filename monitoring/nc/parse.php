@@ -28,20 +28,45 @@ $pChan['In8/0/1:1']='147Mhz';
 $pChan['In8/0/1:2']='153Mhz';
 $pChan['In8/0/1:3']='159Mhz';
 
-$pChan['In8/1/0:0']='873Mhz';
-$pChan['In8/1/0:1']='879Mhz';
-$pChan['In8/1/0:2']='885Mhz';
-$pChan['In8/1/0:3']='891Mhz';
+$pChan['In8/0/2:0']='219Mhz';
+$pChan['In8/0/2:1']='225Mhz';
+$pChan['In8/0/2:2']='231Mhz';
+$pChan['In8/0/2:3']='237Mhz';
 
-$pChan['In8/1/1:0']='897Mhz';
-$pChan['In8/1/1:1']='903Mhz';
-$pChan['In8/1/1:2']='909hhz';
-$pChan['In8/1/1:3']='915Mhz';
+$pChan['In8/0/3:0']='243Mhz';
+$pChan['In8/0/3:1']='249Mhz';
+$pChan['In8/0/3:2']='255Mhz';
+$pChan['In8/0/3:3']='261Mhz';
 
-$pChan['In8/1/2:0']='921Mhz';
-$pChan['In8/1/2:1']='927Mhz';
-$pChan['In8/1/2:2']='933hhz';
-$pChan['In8/1/2:3']='939Mhz';
+$pChan['In8/0/4:0']='267Mhz';
+$pChan['In8/0/4:1']='273Mhz';
+$pChan['In8/0/4:2']='279Mhz';
+$pChan['In8/0/4:3']='285Mhz';
+
+$pChan['In8/1/0:0']='111Mhz';
+$pChan['In8/1/0:1']='117Mhz';
+$pChan['In8/1/0:2']='123Mhz';
+$pChan['In8/1/0:3']='129Mhz';
+
+$pChan['In8/1/1:0']='141Mhz';
+$pChan['In8/1/1:1']='147Mhz';
+$pChan['In8/1/1:2']='153hhz';
+$pChan['In8/1/1:3']='159Mhz';
+
+$pChan['In8/1/2:0']='219Mhz';
+$pChan['In8/1/2:1']='225Mhz';
+$pChan['In8/1/2:2']='231hhz';
+$pChan['In8/1/2:3']='237Mhz';
+
+$pChan['In8/1/3:0']='243Mhz';
+$pChan['In8/1/3:1']='249Mhz';
+$pChan['In8/1/3:2']='255hhz';
+$pChan['In8/1/3:3']='261Mhz';
+
+$pChan['In8/1/4:0']='267Mhz';
+$pChan['In8/1/4:1']='273Mhz';
+$pChan['In8/1/4:2']='279hhz';
+$pChan['In8/1/4:3']='285Mhz';
 
 
 $db=connect();

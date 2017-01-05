@@ -1,13 +1,21 @@
 <?php
 
 if(isset($_GET['wincable']) && isset($_GET['mac']) && isset($_GET['ip_addr'])) {
+	require_once("config.php");
+	$conn = connect();
 	$wincable=$_GET['wincable'];
 	$mac = $_GET['mac'];
 	$ip_addr = $_GET['ip_addr'];
 	$sql[]="DELETE FROM local_statics WHERE wincable='{$wincable}'";
 	$sql[]="INSERT INTO local_statics VALUES (default,{$wincable},'{$mac}','{$ip_addr}')";
 	foreach($sql as $s) {
-		print $s."<br>\n";
+		$res=$conn->query($s);
+		print $s;
+		if(PEAR::isError($res)) {
+			print "\n<br>\n".$res->getMessage()."<br>\n";
+		} else {
+			print ": OK<br>\n";
+		}
 	}
 	exit();
 }

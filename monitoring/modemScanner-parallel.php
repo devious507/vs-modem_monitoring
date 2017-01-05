@@ -206,6 +206,12 @@ function scanHost($h,$start) {
 				if(preg_match('/6/',$m['cmStatus'])) {
 					$index=$m['index'];
 					$localFwdRx=snmpModem($m['ip'],modemRx);
+					if($localFwdRx == false) {
+						$fh=fopen('/tmp/false.log','a');
+						$string = sprintf("%s : %s\n",$m['mac'],$m['ip']);
+						fwrite($fh,$string);
+						fclose($fh);
+					}
 					if($localFwdRx != false) {
 						if(!isset($modems[$index]['revrx'])) {
 							$mmMac = $modems[$index]['mac'];
@@ -253,6 +259,11 @@ function saveDB($m) {
 	//$sql="INSERT INTO modem_history VALUES ('{$m['mac']}','{$m['fwdrx']}','{$m['fwdsnr']}','{$m['revtx']}','{$m['revrx']}','{$m['revsnr']}',now()) ON DUPLICATE KEY UPDATE fwdrx='{$m['fwdrx']}', fwdsnr='{$m['fwdsnr']}', revtx='{$m['revtx']}', revrx='{$m['revrx']}', revsnr='{$m['revsnr']}', time=now()";
 	$c = connect();
 	$c->query($sql);
+	if(false) {
+		$fh=fopen('/tmp/research.txt','a');
+		fwrite($fh,$sql."\n");
+		fclose($fh);
+	}
 }
 
 function saveRRD($m) {

@@ -3,7 +3,7 @@
 require_once("config.php");
 checkSuper();
 
-$sql="SELECT cfg_id,comment,cfg_errors,cfg_update FROM config_modem ORDER BY cfg_id";
+$sql="SELECT cfg_id,sortorder as sort,comment,cfg_errors,cfg_update FROM config_modem ORDER BY sortorder,cfg_id";
 //$sql="SELECT * FROM config_modem";
 $conn = connect();
 
