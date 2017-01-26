@@ -93,17 +93,30 @@ while(($row=$res->fetchRow())==true) {
 	$json['mac']=$row['modem_macaddr'];
 	$json['dynamic_config_file']=$row['dynamic_config_file'];
 	// Set Quota in GB
-	if(preg_match('/,112,/',$json['dynamic_config_file'])) {
+	if(preg_match('/,110,/',$json['dynamic_config_file'])) {
+		$json['quota']=250;
+	} elseif(preg_match('/,112,/',$json['dynamic_config_file'])) {
 		$json['quota']=350;
 	} elseif(preg_match('/,114,/',$json['dynamic_config_file'])) {
 		$json['quota']=500;
+	} elseif(preg_match('/,102,/',$json['dynamic_config_file'])) {
+		$json['quota']=350;
+	} elseif(preg_match('/,103,/',$json['dynamic_config_file'])) {
+		$json['quota']=350;
 	} elseif(preg_match('/,109,/',$json['dynamic_config_file'])) {
 		$json['quota']=1500;
+	} elseif(preg_match('/,100,/',$json['dynamic_config_file'])) {
+		$json['quota']=1000;
 	} elseif(preg_match('/,113,/',$json['dynamic_config_file'])) {
 		$json['quota']=4000;
+	} elseif(preg_match('/,105,/',$json['dynamic_config_file'])) {
+		$json['quota']=2000;
+	} elseif(preg_match('/,106,/',$json['dynamic_config_file'])) {
+		$json['quota']=2500;
 	} else {
 		$json['quota']=0;
 	}
+
 }
 
 
