@@ -4,7 +4,7 @@ require_once("config.php");
 checkSuper();
 
 $sql="SELECT nettype,cmts_ip,network,gateway,range_min,range_max,lease_time,config_opt1 FROM config_nets ORDER BY cmts_ip,nettype,network";
-$sql="SELECT nettype,cmts_ip,network,lease_time,config_opt1,dynamic_flag as dyn,full_flag as full FROM config_nets ORDER BY cmts_ip,nettype,network";
+$sql="SELECT nettype,cmts_ip,network,lease_time,config_opt1,dynamic_flag as dyn,full_flag as full,grant_flag as grnt FROM config_nets ORDER BY cmts_ip,nettype,network";
 $conn = connect();
 
 $body="<table width=\"100%\" cellpadding=\"5\" cellspacing=\"0\" border=\"1\">\n";

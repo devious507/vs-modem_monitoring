@@ -3,8 +3,8 @@
 require_once("MDB2.php");
 define("SPA_TARGET",15);
 define("SPB_TARGET",15);
-define("WESTON_TARGET",3);
-define("OTHER_TARGET",21);  // Was 7
+define("WESTON_TARGET",0);
+define("OTHER_TARGET",16);  // Was 7
 define("GRAYS_TARGET",21);
 
 $config['dtypes']=array("IP","2IP","INT8","UINT8","INT16","UINT16","INT32","UINT32","CHAR","SUB-OPT");

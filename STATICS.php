@@ -84,25 +84,33 @@ $db->query($sql);
 $sql="DELETE FROM dhcp_leases WHERE end_time < now() AND dynamic_flag='YES'";
 $db->query($sql);
 
-$sqlAR[0]['sql']="SELECT count(ipaddr) FROM dhcp_leases WHERE ipaddr like '38.108.138.%'";
-$sqlAR[0]['min']=180;
-$sqlAR[0]['update']="UPDATE config_nets SET full_flag='NO' WHERE network='38.108.138.0/24' AND full_flag='YES'";
+$sqlAR[0]['sql']="SELECT count(ipaddr) FROM dhcp_leases WHERE ipaddr like '38.108.136.%'";
+$sqlAR[0]['min']=125;
+$sqlAR[0]['update']="UPDATE config_nets SET full_flag='NO' WHERE network='38.108.136.128/25' AND full_flag='YES'";
 
-$sqlAR[1]['sql']="SELECT count(ipaddr) FROM dhcp_leases WHERE ipaddr like '38.108.139.%'";
-$sqlAR[1]['min']=80;
-$sqlAR[1]['update']="UPDATE config_nets SET full_flag='NO' WHERE network='38.108.139.0/25' AND full_flag='YES'";
+$sqlAR[1]['sql']="SELECT count(ipaddr) FROM dhcp_leases WHERE ipaddr like '38.108.137.%'";
+$sqlAR[1]['min']=250;
+$sqlAR[1]['update']="UPDATE config_nets SET full_flag='NO' WHERE network='38.108.137.0/24' AND full_flag='YES'";
 
-$sqlAR[2]['sql']="SELECT count(ipaddr) FROM dhcp_leases WHERE ipaddr like '38.108.140.%'";
-$sqlAR[2]['min']=180;
-$sqlAR[2]['update']="UPDATE config_nets SET full_flag='NO' WHERE network='38.108.140.0/24' AND full_flag='YES'";
+$sqlAR[2]['sql']="SELECT count(ipaddr) FROM dhcp_leases WHERE ipaddr like '38.108.138.%'";
+$sqlAR[2]['min']=250;
+$sqlAR[2]['update']="UPDATE config_nets SET full_flag='NO' WHERE network='38.108.138.0/24' AND full_flag='YES'";
 
-$sqlAR[3]['sql']="SELECT count(ipaddr) FROM dhcp_leases WHERE ipaddr like '38.108.141.%'";
-$sqlAR[3]['min']=180;
-$sqlAR[3]['update']="UPDATE config_nets SET full_flag='NO' WHERE network='38.108.141.0/24' AND full_flag='YES'";
+$sqlAR[3]['sql']="SELECT count(ipaddr) FROM dhcp_leases WHERE ipaddr like '38.108.139.%'";
+$sqlAR[3]['min']=250;
+$sqlAR[3]['update']="UPDATE config_nets SET full_flag='NO' WHERE network='38.108.139.0/24' AND full_flag='YES'";
 
-$sqlAR[4]['sql']="SELECT count(ipaddr) FROM dhcp_leases WHERE ipaddr like '38.108.142.%' OR ipaddr like '38.108.143.%'";
-$sqlAR[4]['min']=350;
-$sqlAR[4]['update']="UPDATE config_nets SET full_flag='NO' WHERE network='38.108.142.0/23' AND full_flag='YES'";
+$sqlAR[4]['sql']="SELECT count(ipaddr) FROM dhcp_leases WHERE ipaddr like '38.108.140.%'";
+$sqlAR[4]['min']=250;
+$sqlAR[4]['update']="UPDATE config_nets SET full_flag='NO' WHERE network='38.108.140.0/24' AND full_flag='YES'";
+
+$sqlAR[5]['sql']="SELECT count(ipaddr) FROM dhcp_leases WHERE ipaddr like '38.108.141.%'";
+$sqlAR[5]['min']=250;
+$sqlAR[5]['update']="UPDATE config_nets SET full_flag='NO' WHERE network='38.108.141.0/24' AND full_flag='YES'";
+
+$sqlAR[6]['sql']="SELECT count(ipaddr) FROM dhcp_leases WHERE ipaddr like '38.108.142.%' OR ipaddr like '38.108.143.%'";
+$sqlAR[6]['min']=500;
+$sqlAR[6]['update']="UPDATE config_nets SET full_flag='NO' WHERE network='38.108.142.0/23' AND full_flag='YES'";
 
 foreach ($sqlAR as $s) {
 	$sql = $s['sql'];

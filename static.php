@@ -7,6 +7,7 @@ if(isset($_GET['wincable']) && isset($_GET['mac']) && isset($_GET['ip_addr'])) {
 	$mac = $_GET['mac'];
 	$ip_addr = $_GET['ip_addr'];
 	$sql[]="DELETE FROM local_statics WHERE wincable='{$wincable}'";
+	$sql[]="DELETE FROM local_statics WHERE mac_addr='{$mac}'";
 	$sql[]="INSERT INTO local_statics VALUES (default,{$wincable},'{$mac}','{$ip_addr}')";
 	foreach($sql as $s) {
 		$res=$conn->query($s);
@@ -38,6 +39,7 @@ if(isset($_GET['input'])) {
 	print "<pre>\n";
 	print "\n\nmysql dhcp_server\n";
 	print "\n\nDELETE FROM local_statics WHERE wincable={$wincable};\n";
+	print "\n\nDELETE FROM local_statics WHERE mac_addr='{$mac}';\n";
 	print "\n\nINSERT INTO local_statics VALUES (default,{$wincable},'{$mac}','{$ip_addr}');\n";
 	print "SELECT l.entry_date,l.wincable,l.mac_addr,l.ip_addr,c.name FROM local_statics AS l LEFT JOIN customer_address AS c ON l.wincable=c.subnum WHERE c.name IS NULL OR c.name='';\n\n\n";
 	print "</pre>\n";

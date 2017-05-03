@@ -16,6 +16,9 @@ if(strlen($_GET['mac']) != 12) {
 }
 
 $sql="SELECT * FROM cable_usage WHERE modem_macaddr='{$mac}' ORDER BY entry_time ASC";
+if(isset($_GET['table']) && $_GET['table']=='backup') {
+	$sql="SELECT * FROM cable_usage_backup WHERE modem_macaddr='{$mac}' ORDER BY down_delta DESC";
+}
 //print $sql; exit();
 $db=connect();
 $res=$db->query($sql);
@@ -74,8 +77,12 @@ $customerInfo.=$row['apartment']."<br>";
 $customerInfo.=$row['city'].", ".$row['state']." ".$row['zip']."<hr>";
 $customerInfo.="<a href=\"/monitoring/modemHistory.php?mac={$mac}\" target=\"_TOP\">Modem History</a><br>";
 $customerInfo.="<a href=\"index.php\">Modem Usage List</a><br>";
+$customerInfo.="<a href=\"modemDump.php?mac={$mac}&table=backup\">Last Months Details</a><br>";
 
 $sql="SELECT sum(down_delta) as d, sum(up_delta) as u FROM cable_usage WHERE modem_macaddr='{$mac}'";
+if(isset($_GET['table']) && $_GET['table']=='backup') {
+	$sql="SELECT sum(down_delta) as d, sum(up_delta) as u FROM cable_usage_backup WHERE modem_macaddr='{$mac}'";
+}
 $res=$db->query($sql);
 $row=$res->fetchRow();
 $d=floatval($row['d'])/1024/1024/1024;
