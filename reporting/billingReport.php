@@ -46,16 +46,29 @@ if($mtd) {
 }
 $count=0;
 $db=connect();
-getList($db,$month,$year,110,250,$mtd,$callList);		// Config 110 is 15Meg, has 250GB Quota
-getList($db,$month,$year,112,350,$mtd,$callList);		// Config 112 is 30Meg, has 350GB Quota (Old / Bulk)
-getList($db,$month,$year,114,500,$mtd,$callList);		// Config 114 is 50Meg, has 500GB Quota (Old / Bulk)
+$url="http://38.108.136.6/reporting/quota.php";
+$fh=fopen($url,'r');
+$data=stream_get_contents($fh);
+fclose($fh);
+$sl=json_decode($data);
+foreach($sl as $k=>$v) {
+	getList($db,$month,$year,$k,$v,$mtd,$callList);
+}
+/*
+getList($db,$month,$year,100,1000,$mtd,$callList);	// Config 100 is 100Meg, has 1000GB Quota
 getList($db,$month,$year,102,350,$mtd,$callList);		// Config 102 is 55Meg, has 350Gb Quota
 getList($db,$month,$year,103,350,$mtd,$callList);		// Config 103 is 75Meg, has 350Gb Quota
-getList($db,$month,$year,109,1500,$mtd,$callList);	// Config 109 is 100Meg, has 1500GB Quota (Old)
-getList($db,$month,$year,100,1000,$mtd,$callList);	// Config 100 is 100Meg, has 1000GB Quota
-getList($db,$month,$year,113,4000,$mtd,$callList);	// Config 113 is 125Meg, has 4000GB Quota
 getList($db,$month,$year,105,2000,$mtd,$callList);	// Config 105 is 150Meg, has 2000GB Quota
 getList($db,$month,$year,106,2500,$mtd,$callList);	// Config 106 is 200Meg, has 2500Gb Quota
+getList($db,$month,$year,108,500,$mtd,$callList);		// Config 108 is Bulk 75 500Gb Quota
+getList($db,$month,$year,109,1500,$mtd,$callList);	// Config 109 is 100Meg, has 1500GB Quota (Old)
+getList($db,$month,$year,110,250,$mtd,$callList);		// Config 110 is 15Meg, has 250GB Quota
+getList($db,$month,$year,112,350,$mtd,$callList);		// Config 112 is 30Meg, has 350GB Quota (Old / Bulk)
+getList($db,$month,$year,113,4000,$mtd,$callList);	// Config 113 is 125Meg, has 4000GB Quota
+getList($db,$month,$year,114,350,$mtd,$callList);		// Config 114 is 50Meg, has 500GB Quota (Old / Bulk)
+getList($db,$month,$year,115,1000,$mtd,$callList);		// Config 115 is Bulk 100 1000Gb Quota
+getList($db,$month,$year,116,2000,$mtd,$callList);		// Config 116 is Bulk 150 2000Gb Quota
+ */
 print "</table></body></html>";
 
 function getList($db,$month,$year,$config_piece,$quota,$mtd,$callList) {
@@ -101,9 +114,10 @@ function getList($db,$month,$year,$config_piece,$quota,$mtd,$callList) {
 			}
 			if($callList) {
 				if($pTail != '') {
+					$link="<a href=\"/modem.php?search=subnum&value={$subnum}\">{$subnum}</a>";
 					print "<tr>";
 					print "<td>{$name}</td>";
-					print "<td>{$subnum}</td>";
+					print "<td>{$link}</td>";
 					print "<td align=\"right\">{$down}GB</td>";
 					print "<td align=\"right\">{$up}GB</td>";
 					print "<td align=\"right\">{$total}GB</td>";
@@ -113,9 +127,10 @@ function getList($db,$month,$year,$config_piece,$quota,$mtd,$callList) {
 					print "<td align=\"right\">{$img}</td>";
 				}
 			} else {
+				$link="<a href=\"/modem.php?search=subnum&value={$subnum}\">{$subnum}</a>";
 				print "<tr>";
 				print "<td>{$name}</td>";
-				print "<td>{$subnum}</td>";
+				print "<td>{$link}</td>";
 				print "<td align=\"right\">{$down}GB</td>";
 				print "<td align=\"right\">{$up}GB</td>";
 				print "<td align=\"right\">{$total}GB</td>";
@@ -125,9 +140,10 @@ function getList($db,$month,$year,$config_piece,$quota,$mtd,$callList) {
 				print "<td align=\"right\">{$img}</td>";
 			}
 		} else {
+			$link="<a href=\"/modem.php?search=subnum&value={$subnum}\">{$subnum}</a>";
 			print "<tr>";
 			print "<td>{$name}</td>";
-			print "<td>{$subnum}</td>";
+			print "<td>{$link}</td>";
 			print "<td align=\"right\">{$down}GB</td>";
 			print "<td align=\"right\">{$up}GB</td>";
 			print "<td align=\"right\">{$total}GB</td>";

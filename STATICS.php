@@ -54,7 +54,6 @@ if(PEAR::isError($res)) {
 	exit();
 }
 
-$row=$res->fetchRow();
 while(($row=$res->fetchRow())==true) {
 	$mac=$row['mac_addr'];
 	$ip =$row['ip_addr'];

@@ -92,7 +92,21 @@ if(PEAR::isError($res)) {
 while(($row=$res->fetchRow())==true) {
 	$json['mac']=$row['modem_macaddr'];
 	$json['dynamic_config_file']=$row['dynamic_config_file'];
+	$url="http://38.108.136.6/reporting/quota.php";
+	$fh=fopen($url,'r');
+	$data=stream_get_contents($fh);
+	fclose($fh);
+	$sl=json_decode($data);
+
 	// Set Quota in GB
+	$json['quota']=0;
+	for($i=100; $i<200; $i++) {
+		$match="/,".$i.",/";
+		if(preg_match($match,$json['dynamic_config_file'])) {
+			$json['quota']=$sl->$i;
+		}
+	}
+	/*
 	if(preg_match('/,110,/',$json['dynamic_config_file'])) {
 		$json['quota']=250;
 	} elseif(preg_match('/,112,/',$json['dynamic_config_file'])) {
@@ -116,6 +130,7 @@ while(($row=$res->fetchRow())==true) {
 	} else {
 		$json['quota']=0;
 	}
+	 */
 
 }
 
