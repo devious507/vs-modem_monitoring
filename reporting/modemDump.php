@@ -78,6 +78,7 @@ $customerInfo.=$row['city'].", ".$row['state']." ".$row['zip']."<hr>";
 $customerInfo.="<a href=\"/monitoring/modemHistory.php?mac={$mac}\" target=\"_TOP\">Modem History</a><br>";
 $customerInfo.="<a href=\"index.php\">Modem Usage List</a><br>";
 $customerInfo.="<a href=\"modemDump.php?mac={$mac}&table=backup\">Last Months Details</a><br>";
+$customerInfo.="<a href=\"perSecondAnalysis?mac={$mac}\">Per Second Analysis</a></br>";
 
 $sql="SELECT sum(down_delta) as d, sum(up_delta) as u FROM cable_usage WHERE modem_macaddr='{$mac}'";
 if(isset($_GET['table']) && $_GET['table']=='backup') {
