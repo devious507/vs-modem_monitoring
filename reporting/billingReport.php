@@ -72,7 +72,7 @@ getList($db,$month,$year,116,2000,$mtd,$callList);		// Config 116 is Bulk 150 20
 print "</table></body></html>";
 
 function getList($db,$month,$year,$config_piece,$quota,$mtd,$callList) {
-	$sql="select distinct(subnum) from docsis_modem WHERE config_file='auto' and dynamic_config_file like '%,{$config_piece},%' AND quota=true ORDER BY subnum";
+	$sql="select distinct(subnum) from docsis_modem WHERE (config_file='auto' OR config_file='disable.bin') and dynamic_config_file like '%,{$config_piece},%' AND quota=true ORDER BY subnum";
 	$results=$db->query($sql);
 	while(($row=$results->fetchRow()) == true) {
 		$subnum=$row['subnum'];

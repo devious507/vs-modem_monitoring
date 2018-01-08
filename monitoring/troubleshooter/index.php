@@ -2,6 +2,7 @@
 
 require_once("../../config.php");
 $body='<ul>';
+$body.='<li><a href="monitoring/FLAP/index.php">CM Flaps</a></li>';
 $body.='<li><a href="monitoring/troubleshooter/lastDhcpEntries.php">Last Dhcp Entries</a></li>';
 $body.='<li><a href="monitoring/flapcheck/index.php">Flap Listing</a></li>';
 $body.="<li>------------------------------------------------------------------------------------------------------------</li>";

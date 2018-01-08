@@ -69,7 +69,7 @@ if($subnum != '') {
 	$sql="select subnum,start_time,end_time,ipaddr from dmca_ip_tracking WHERE start_time < '{$myDate}' AND end_time > '{$myDate}' AND ipaddr='{$ipaddr}' AND subnum='{$subnum}' GROUP BY start_time,end_time,ipaddr";
 	print getSqlResults($sql,true);
 	print "<pre>\n\n{$complaint}\n\n</pre>\n";
-	print "<a href=\"tagEvent.php\">Back</a>";
+	print "<a href=\"tagEvent.php\">Back</a> | <a href=\"http://www.visionsystems.tv/~paulo/dmca\">ACNS XML Entry</a>";
 	print "</body></html>";
 	exit();
 } else {
@@ -118,6 +118,7 @@ function renderForm($subnum='',$date='',$ipaddr='',$complaint='') {
 	$body.="<tr><td colspan=\"2\"><textarea name=\"complaint\" rows=\"15\" cols=\"75\">{$complaint}</textarea></td></tr>";
 	$body.="<tr><td colspan=\"2\"><input type=\"submit\" value=\"Lookup\"></td></tr>";
 	$body.="</table></form>";
+	$body.="<p><a href=\"http://www.visionsystems.tv/~paulo/dmca\">ACNS XML Entry</a></a>";
 	return $body;
 }
 ?>
