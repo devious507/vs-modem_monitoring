@@ -1,6 +1,7 @@
 div.logfile {
 	border-style: solid;
-	width: 600px;
+	width: 800px;
+	height: 400px;
 	position: absolute;
 	background-color: lightgrey;
 	top: 75px;
@@ -8,6 +9,6 @@ div.logfile {
 	visibility: hidden;
 }
 iframe#logframe {
-	width: 100%;
-	height: 100%;
+	width: 800px;
+	height: 350px;
 }

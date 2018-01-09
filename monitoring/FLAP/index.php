@@ -50,8 +50,72 @@ foreach($myLines as $l) {
 		$conn->query($sql);
 	}
 }
-$lbls=array('MAC','Upstream','INS','Hit','MISS','CRC','P-Adj','Flap','Subnum','Config','Name','Bldg','Prop.','Node','FwdRX','FwdSNR','RevTX','RevRX','RevSNR');
-$sql="SELECT aaa.*,m.fwdrx,m.fwdsnr,m.revtx,m.revrx,m.revsnr FROM (SELECT aa.* FROM (SELECT a.*,c.name,c.building,c.property,c.node FROM (select f.*,d.subnum,d.config_file FROM myflaps AS f LEFT OUTER JOIN docsis_modem as d ON f.mac=d.modem_macaddr) as a LEFT OUTER JOIN customer_address AS c ON a.subnum=c.subnum) as aa) as aaa LEFT OUTER JOIN modem_history as m ON aaa.mac=m.mac ORDER BY aaa.flap DESC, aaa.subnum ASC";
+$lbls=array('MAC',
+	'Upstream',
+	'<a href="index.php?sort=ins">INS</a>',
+	'<a href="index.php?sort=hit">Hit</a>',
+	'<a href="index.php?sort=miss">MISS</a>',
+	'<a href="index.php?sort=crc">CRC</a>',
+	'<a href="index.php?sort=padj">P-Adj</a>',
+	'<a href="index.php">Flap</a>',
+	'Subnum',
+	'Config',
+	'<a href="index.php?sort=name">Name</a>',
+	'Bldg',
+	'<a href="index.php?sort=property">Prop</a>.',
+	'Node',
+	'<a href="index.php?sort=fwdrx">FwdRX</a>',
+	'<a href="index.php?sort=fwdsnr">FwdSNR</a>',
+	'<a href="index.php?sort=revtx">RevTX</a>',
+	'<a href="index.php?sort=revrx">RevRX</a>',
+	'<a href="index.php?sort=revsnr">RevSNR</a>');
+$sql="SELECT aaa.*,m.fwdrx,m.fwdsnr,m.revtx,m.revrx,m.revsnr FROM (SELECT aa.* FROM (SELECT a.*,c.name,c.building,c.property,c.node FROM (select f.*,d.subnum,d.config_file FROM myflaps AS f LEFT OUTER JOIN docsis_modem as d ON f.mac=d.modem_macaddr) as a LEFT OUTER JOIN customer_address AS c ON a.subnum=c.subnum) as aa) as aaa LEFT OUTER JOIN modem_history as m ON aaa.mac=m.mac ";
+if(!isset($_GET['sort'])) {
+	$sql.="ORDER BY aaa.flap DESC, aaa.subnum ASC";
+} else {
+	switch($_GET['sort']) {
+	case "property":
+		$sql.="ORDER BY property,building,name";
+		break;
+	case "ins":
+		$sql.="ORDER BY aaa.ins DESC,aaa.flap ASC,aaa.subnum ASC";
+		break;
+	case "padj":
+		$sql.="ORDER BY aaa.padj DESC, aaa.flap DESC, aaa.subnum ASC";
+		break;
+	case "miss":
+		$sql.="ORDER BY aaa.miss DESC, aaa.flap DESC, aaa.subnum ASC";
+		break;
+	case "crc":
+		$sql.="ORDER BY aaa.crc DESC, aaa.flap DESC, aaa.subnum ASC";
+		break;
+	case "hit":
+		$sql.="ORDER BY aaa.hit DESC, aaa.flap DESC, aaa.subnum ASC";
+		break;
+	case "fwdrx":
+		$sql.="ORDER BY fwdrx ASC, flap DESC, subnum ASC";
+		break;
+	case "fwdsnr":
+		$sql.="ORDER BY fwdsnr ASC, flap DESC, subnum ASC";
+		break;
+	case "revtx":
+		$sql.="ORDER BY revtx ASC, flap DESC, subnum ASC";
+		break;
+	case "revrx":
+		$sql.="ORDER BY revrx ASC, flap DESC, subnum ASC";
+		break;
+	case "revsnr":
+		$sql.="ORDER BY revsnr ASC, flap DESC, subnum ASC";
+		break;
+	case "name":
+		$sql.="ORDER BY name ASC, flap DESC, padj ASC";
+		break;
+	case "flap":
+	default:
+		$sql.="ORDER BY aaa.flap DESC, aaa.subnum ASC";
+		break;
+	}
+}
 $res=$conn->query($sql);
 print "<!DOCTYPE html>\n";
 print "<html>\n";
@@ -74,10 +138,14 @@ while(($row=$res->fetchRow()) == true) {
 	foreach($row as $k=>$v) {
 		switch($k) {
 		case "mac":
-			//$url="<a href=\"myDiv.php?mac={$v}&name={$row['name']}\">{$v}</a>";
 			$url="<a href=\"javascript:setDiv('{$v}','{$row['name']}')\">{$v}</a>";
 			$v=$url;
 			$bg='white';
+			break;
+		case "building":
+			$url="<a target=\"flap_worker\" href=\"/monitoring/bester.php?search=building&value={$v}\">{$v}</a>";
+			$bg='white';
+			$v=$url;
 			break;
 		case "name":
 			if(preg_match("/Node.*Reference/",$v) OR $v=='') {
@@ -86,9 +154,12 @@ while(($row=$res->fetchRow()) == true) {
 				$bg='white';
 			}
 			break;
-		case "subnum":
-			$url="<a href=\"/monitoring/bester.php?search=subnum&value={$v}\">{$v}</a>";
+		case "node":
+			$url="<a target=\"flap_worker\" href=\"/monitoring/bester.php?search=node&value={$v}\">{$v}</a>";
 			$v=$url;
+			$bg='white';
+			break;
+		case "subnum":
 			$bg='white';
 			break;
 		case "fwdrx":
