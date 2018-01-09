@@ -3,6 +3,7 @@
 define("INFILE","/var/www/monitoring/FLAP/LIST");
 define("OUTFILE","/var/www/monitoring/FLAP/OUT");
 define("FILEDIR","/var/www/monitoring/FLAP/history/");
+define("MINFLAPS","10");
 
 
 function saveLine($line,$p) {

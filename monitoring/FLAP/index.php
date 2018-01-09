@@ -61,20 +61,23 @@ $lbls=array('MAC',
 	'Subnum',
 	'Config',
 	'<a href="index.php?sort=name">Name</a>',
-	'Bldg',
+	'<a href="index.php?sort=building">Bldg</a>',
 	'<a href="index.php?sort=property">Prop</a>.',
-	'Node',
+	'<a href="index.php?sort=node">Node</a>',
 	'<a href="index.php?sort=fwdrx">FwdRX</a>',
 	'<a href="index.php?sort=fwdsnr">FwdSNR</a>',
 	'<a href="index.php?sort=revtx">RevTX</a>',
 	'<a href="index.php?sort=revrx">RevRX</a>',
 	'<a href="index.php?sort=revsnr">RevSNR</a>');
 $sql="SELECT aaa.*,m.fwdrx,m.fwdsnr,m.revtx,m.revrx,m.revsnr FROM (SELECT aa.* FROM (SELECT a.*,c.name,c.building,c.property,c.node FROM (select f.*,d.subnum,d.config_file FROM myflaps AS f LEFT OUTER JOIN docsis_modem as d ON f.mac=d.modem_macaddr) as a LEFT OUTER JOIN customer_address AS c ON a.subnum=c.subnum) as aa) as aaa LEFT OUTER JOIN modem_history as m ON aaa.mac=m.mac ";
+$sql.="WHERE flap >= ".MINFLAPS." ";
 if(!isset($_GET['sort'])) {
 	$sql.="ORDER BY aaa.flap DESC, aaa.subnum ASC";
 } else {
 	switch($_GET['sort']) {
 	case "property":
+	case "building":
+	case "node":
 		$sql.="ORDER BY property,building,name";
 		break;
 	case "ins":
@@ -116,6 +119,7 @@ if(!isset($_GET['sort'])) {
 		break;
 	}
 }
+//print $sql; exit();
 $res=$conn->query($sql);
 print "<!DOCTYPE html>\n";
 print "<html>\n";
