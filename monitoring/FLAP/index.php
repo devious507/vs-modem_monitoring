@@ -51,13 +51,21 @@ foreach($myLines as $l) {
 	}
 }
 $lbls=array('MAC','Upstream','INS','Hit','MISS','CRC','P-Adj','Flap','Subnum','Config','Name','Bldg','Prop.','Node','FwdRX','FwdSNR','RevTX','RevRX','RevSNR');
-$sql="SELECT aaa.*,m.fwdrx,m.fwdsnr,m.revtx,m.revrx,m.revsnr FROM (SELECT aa.* FROM (SELECT a.*,c.name,c.building,c.property,c.node FROM (select f.*,d.subnum,d.config_file FROM myflaps AS f LEFT OUTER JOIN docsis_modem as d ON f.mac=d.modem_macaddr) as a LEFT OUTER JOIN customer_address AS c ON a.subnum=c.subnum) as aa) as aaa LEFT OUTER JOIN modem_history as m ON aaa.mac=m.mac ORDER BY aaa.flap DESC";
+$sql="SELECT aaa.*,m.fwdrx,m.fwdsnr,m.revtx,m.revrx,m.revsnr FROM (SELECT aa.* FROM (SELECT a.*,c.name,c.building,c.property,c.node FROM (select f.*,d.subnum,d.config_file FROM myflaps AS f LEFT OUTER JOIN docsis_modem as d ON f.mac=d.modem_macaddr) as a LEFT OUTER JOIN customer_address AS c ON a.subnum=c.subnum) as aa) as aaa LEFT OUTER JOIN modem_history as m ON aaa.mac=m.mac ORDER BY aaa.flap DESC, aaa.subnum ASC";
 $res=$conn->query($sql);
-print "<!DOCTYPE html><html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\"><meta charset=\"UTF-8\"><title>Flap Research</title></head><body>";
-if(isset($log)) {
-	print "<div class=\"logfile\" name=\"logfile\">{$log}<hr><a href=\"index.php\">Close</a></div>\n";
-}
+print "<!DOCTYPE html>\n";
+print "<html>\n";
+print "<head>\n";
+print "<script src=\"functions.js\" type=\"text/Javascript\"></script>\n";
+print "<link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">\n";
+print "<meta charset=\"UTF-8\">\n";
+print "<title>Flap Research</title>\n";
+print "</head>\n";
+print "<body ondragover=\"drag_over(event)\" ondrop=\"drop(event)\">\n";
+print "<div class=\"logfile\" name=\"logfile\" id=\"logfile\" draggable=\"true\" ondragstart=\"drag_start(event)\">Subscriber Flap History:<iframe id=\"logframe\" class=\"logframe\"></iframe><a href=\"javascript:closeDiv()\">Close</a></div>\n";
 print "<table border=\"1\" cellpadding=\"4\" cellspacing=\"0\">\n";
+$mtime="Flaps as of: ".date('H:i:s m/d/y',filemtime(OUTFILE));
+print "<tr><td align=\"center\" colspan=\"8\">{$mtime}</td><td colspan=\"6\" align=\"center\">Subscriber Info</td><td colspan=\"5\" align=\"center\">Current Levels</a></td></tr>\n";
 print "<tr><td align=\"right\">";
 print implode("</td><td align=\"right\">",$lbls);
 print "</td></tr>\n";
@@ -66,7 +74,8 @@ while(($row=$res->fetchRow()) == true) {
 	foreach($row as $k=>$v) {
 		switch($k) {
 		case "mac":
-			$url="<a href=\"index.php?mac={$v}&name={$row['name']}\">{$v}</a>";
+			//$url="<a href=\"myDiv.php?mac={$v}&name={$row['name']}\">{$v}</a>";
+			$url="<a href=\"javascript:setDiv('{$v}','{$row['name']}')\">{$v}</a>";
 			$v=$url;
 			$bg='white';
 			break;
