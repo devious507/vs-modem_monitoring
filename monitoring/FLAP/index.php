@@ -120,6 +120,10 @@ if(!isset($_GET['sort'])) {
 	}
 }
 //print $sql; exit();
+$sqlCount="SELECT count(*) as c FROM myflaps";
+$res=$conn->query($sqlCount);
+$row=$res->fetchRow();
+$linePos=round($row['c']/10,0)+2;
 $res=$conn->query($sql);
 print "<!DOCTYPE html>\n";
 print "<html>\n";
@@ -137,6 +141,7 @@ print "<tr><td align=\"center\" colspan=\"8\">{$mtime}</td><td colspan=\"6\" ali
 print "<tr><td align=\"right\">";
 print implode("</td><td align=\"right\">",$lbls);
 print "</td></tr>\n";
+$count=0;
 while(($row=$res->fetchRow()) == true) {
 	print "<tr>\n";
 	foreach($row as $k=>$v) {
@@ -152,10 +157,11 @@ while(($row=$res->fetchRow()) == true) {
 			$v=$url;
 			break;
 		case "name":
-			if(preg_match("/Node.*Reference/",$v) OR $v=='') {
+			if(preg_match("/Node.*Reference/",$v) OR $v=='' OR preg_match("/Phone Dummy/",$v)) {
 				$bg="#cacaca";
 			} else{
 				$bg='white';
+				$count++;
 			}
 			break;
 		case "node":
@@ -164,6 +170,8 @@ while(($row=$res->fetchRow()) == true) {
 			$bg='white';
 			break;
 		case "subnum":
+			$url="<a target=\"flap_worker\" href=\"/monitoring/modemHistory.php?mac={$row['mac']}\">{$v}</a>";
+			$v=$url;
 			$bg='white';
 			break;
 		case "fwdrx":
@@ -190,6 +198,9 @@ while(($row=$res->fetchRow()) == true) {
 		}
 	}
 	print "</tr>\n";
+	if($linePos == $count) {
+		print "<tr>\n\t<td colspan=\"19\" bgcolor=\"black\">&nbsp;</td>\n</tr>\n";
+	}
 }
 print "</table>\n";
 print "</body></html>";
