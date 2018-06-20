@@ -198,7 +198,7 @@ while(($row=$res->fetchRow()) == true) {
 		}
 	}
 	print "</tr>\n";
-	if($linePos == $count) {
+	if($linePos == $count && !isset($_GET['sort'])) {
 		print "<tr>\n\t<td colspan=\"19\" bgcolor=\"black\">&nbsp;</td>\n</tr>\n";
 	}
 }

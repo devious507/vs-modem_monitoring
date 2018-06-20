@@ -149,21 +149,31 @@ if(strlen($mac) == 12) {
 	$dispatchLink= "<a href=\"http://dashboard.visionsystems.tv/dispatcher/assistant.php?mac={$mac}\">Dispatch&nbsp;Assistant</a>";
 	$body.="<tr><td colspan=\"{$colSpan}\"><input type=\"hidden\" name=\"mac\" value=\"{$mac}\">[ {$bester} | {$bester2} | {$pinger} | {$configure} | {$newBester} | {$upModem} | {$flapList} | {$usageLink} | {$dispatchLink} ]</td></tr>\n";
 	$month=$day=$year=NULL;
-	if(isset($_GET['startmonth']))
-		$month=$_GET['startmonth'];
-	if(isset($_GET['startday']))
-		$day=$_GET['startday'];
-	if(isset($_GET['startyear']))
-		$year=$_GET['startyear'];
-	$start=date_picker('start',$month,$day,$year,60*60*24*10);
+	if(isset($_GET['start'])) {
+		$a = date_parse($_GET['start']);
+		$month = sprintf("%02d",$a['month']);
+		$day   = sprintf("%02d",$a['day']);
+		$year  = sprintf("%02d",$a['year']);
+	} else {
+		$then = time()-(24*60*60*10);
+		$month = date('m',$then);
+		$day   = date('d',$then);
+		$year  = date('Y',$then);
+	}
+	$start = "<input type=\"date\" value=\"{$year}-{$month}-{$day}\" name=\"start\">";
+	// End thing
 	$month=$day=$year=NULL;
-	if(isset($_GET['endmonth']))
-		$month=$_GET['endmonth'];
-	if(isset($_GET['endday']))
-		$day=$_GET['endday'];
-	if(isset($_GET['endyear']))
-		$year=$_GET['endyear'];
-	$end=date_picker('end',$month,$day,$year);
+	if(isset($_GET['end'])) {
+		$a = date_parse($_GET['end']);
+		$month = sprintf("%02d",$a['month']);
+		$day   = sprintf("%02d",$a['day']);
+		$year  = sprintf("%02d",$a['year']);
+	} else {
+		$month = date('m');
+		$day   = date('d');
+		$year  = date('Y');
+	}
+	$end = "<input tpe=\"date\" value=\"{$year}-{$month}-{$day}\" name=\"end\">";
 	if(isset($_GET['graphtype'])) {
 		$type=typeSelector($_GET['graphtype']);
 	} else {
@@ -193,18 +203,14 @@ buildPage($body,$sql);
 function myGraph($g,$t) {
 	$type = $t; 
 	$mac=$g['mac'];
-	if(!isset($g['startmonth'])) 
-		$g['startmonth']=date('m');
-	if(!isset($g['startday']))
-		$g['startday']=date('d');
-	if(!isset($g['startyear']))
-		$g['startyear']=date('Y');
-	if(!isset($g['endmonth']))
-		$g['endmonth']=date('m');
-	if(!isset($g['endday']))
-		$g['endday']=date('d');
-	if(!isset($g['endyear']))
-		$g['endyear']=date('Y');
+	$a = date_parse($_GET['start']);
+	$g['startmonth']=$a['month'];
+	$g['startday']  =$a['day'];
+	$g['startyear'] =$a['year'];
+	$a = date_parse($_GET['end']);
+	$g['endmonth']  =$a['month'];
+	$g['endday']    =$a['day'];
+	$g['endyear']   =$a['year'];
 		
 	$start=mktime(0,0,0,$g['startmonth'],$g['startday'],$g['startyear']);
 	$end  =mktime(23,59,59,$g['endmonth'],$g['endday'],$g['endyear']);

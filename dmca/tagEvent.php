@@ -56,6 +56,8 @@ if(isset($_GET['complaint'])) {
 	$complaint='';
 }
 
+//phpinfo(); exit();
+
 $dataTable=renderForm($subnum,$myDate,$ipaddr,$complaint);
 if($subnum != '') {
 	$url="Subscriber: <a href=\"/modem.php?search=subnum&value={$subnum}\">{$subnum}</a>";
@@ -69,7 +71,8 @@ if($subnum != '') {
 	$sql="select subnum,start_time,end_time,ipaddr from dmca_ip_tracking WHERE start_time < '{$myDate}' AND end_time > '{$myDate}' AND ipaddr='{$ipaddr}' AND subnum='{$subnum}' GROUP BY start_time,end_time,ipaddr";
 	print getSqlResults($sql,true);
 	print "<pre>\n\n{$complaint}\n\n</pre>\n";
-	print "<a href=\"tagEvent.php\">Back</a> | <a href=\"http://www.visionsystems.tv/~paulo/dmca\">ACNS XML Entry</a>";
+	print "<a href=\"tagEvent.php\">Back</a> | <a href=\"http://www.visionsystems.tv/~paulo/dmca\">ACNS XML Entry</a> |";
+	print "<a href=\"sendEmails.php?{$_SERVER['QUERY_STRING']}\">Send Emails</a>";
 	print "</body></html>";
 	exit();
 } else {

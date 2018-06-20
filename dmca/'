@@ -1,0 +1,32 @@
+<?php
+
+
+$complaint=$_GET['complaint'];
+$bcc='paulo@visionsystems.tv,david@visionsystems.tv';
+
+$from=getEmailPiece($complaint,"/^From: /");
+$subject=getEmailPiece($complaint,"/^Subject: /");
+
+$body="The referenced compalint has been addressed, the offending subscriber(s) have had their Internet Services suspended pending contact with us for customer education.\n\nComplaint Summary Follows:\n\n";
+$body.=$complaint;
+
+print "<html><head><title>Email Sender</title></head><body>";
+print "<table cellpadding=\"3\" cellspacing=\"0\" border=\"1\">";
+print "<tr><td>To:</td><td>{$from}</td></tr>";
+print "<tr><td>From:</td><td>paulo@visionsystems.tv</td></tr>";
+print "<tr><td>Bcc:</td><td>{$bcc}</td></tr>";
+print "<tr><td>Subject:</td><td>{$subject}</td></tr>";
+print "<tr><td colspan=\"2\"><textarea rows=\"25\" cols=\"80\">{$complaint}</td></tr>";
+print "</table>";
+print "</body></html>";
+
+function getEmailPiece($data,$pat) {
+	$arr=preg_split("/\n/",$data);
+	foreach($arr as $line) {
+		if(preg_match($pat,$line)) {
+			$rv=preg_replace($pat,"",$line);
+			return $rv;
+		}
+	}
+}
+?>

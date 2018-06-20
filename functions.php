@@ -12,7 +12,8 @@ $config['dtypes']=array("IP","2IP","INT8","UINT8","INT16","UINT16","INT32","UINT
 $config['nettypes']=array("CM","CPE","MTA");
 
 function docType() {
-	return '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">';
+	return '<!DOCTYPE html>';
+	//return '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">';
 }
 function dbTimestampConvert($val) {
 	$t1=preg_split("/ /",$val);
