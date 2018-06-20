@@ -173,7 +173,7 @@ if(strlen($mac) == 12) {
 		$day   = date('d');
 		$year  = date('Y');
 	}
-	$end = "<input tpe=\"date\" value=\"{$year}-{$month}-{$day}\" name=\"end\">";
+	$end = "<input type=\"date\" value=\"{$year}-{$month}-{$day}\" name=\"end\">";
 	if(isset($_GET['graphtype'])) {
 		$type=typeSelector($_GET['graphtype']);
 	} else {
